@@ -23,8 +23,8 @@ fun SearchScreen(
 	SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
-		onValueChange = {}, //뷰모델 함수와 연결
-		onSearchClick = {}
+		onValueChange = searchViewModel::changeSearchKeyword,
+		onSearchClick = searchViewModel::searchKeyword
 	)
 
 }
