@@ -3,7 +3,7 @@ package com.kova700.amazonbookstorepractice.feature.main.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kova700.amazonbookstorepractice.data.BookSearchRepositoryImpl
+import com.kova700.amazonbookstorepractice.data.BookSearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-	private val bookSearchRepository: BookSearchRepositoryImpl
+	private val bookSearchRepository: BookSearchRepository
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> = MutableStateFlow(SearchViewState())
@@ -47,11 +47,9 @@ class SearchViewModel @Inject constructor(
 					}
 				}
 		}
-
 	}
 
 	private inline fun updateState(block: SearchViewState.() -> SearchViewState) {
-		val newState = _viewState.value.block()
-		_viewState.value = newState
+		_viewState.value = _viewState.value.block()
 	}
 }
