@@ -18,7 +18,6 @@ data class Meta(
 	@SerialName("total_count") val totalCount: Int
 )
 
-@Parcelize
 @Serializable
 data class Book(
 	val title: String,
@@ -33,6 +32,6 @@ data class Book(
 	val translators: List<String>,
 	val url: String,
 	@SerialName("sale_price") val salePrice: Int
-) : Parcelable
+)
 
 //TODO : search.daum => m.search.daum으로 수정해주는 로직 필요
