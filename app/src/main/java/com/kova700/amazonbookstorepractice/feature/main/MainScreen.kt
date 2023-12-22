@@ -1,6 +1,8 @@
 package com.kova700.amazonbookstorepractice.feature.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,6 +21,7 @@ fun MainScreen(
 	navController: NavHostController = rememberNavController(),
 ) {
 	NavHost(navController = navController, startDestination = ScreenRoute.SEARCH.route) {
+
 		composable(
 			route = ScreenRoute.SEARCH.route,
 		) {
@@ -28,13 +31,20 @@ fun MainScreen(
 				}
 			)
 		}
+
 		composable(
 			route = "${ScreenRoute.DETAIL.route}/{$SELECTED_BOOK_INDEX}",
 			arguments = listOf(
 				navArgument(SELECTED_BOOK_INDEX) { type = NavType.IntType }
 			)
 		) { navBackstackEntry ->
+
+			val parentNavBackstackEntry = remember(navBackstackEntry) {
+				navController.getBackStackEntry(ScreenRoute.SEARCH.route)
+			}
+
 			DetailScreen(
+				searchViewModel = hiltViewModel(parentNavBackstackEntry),
 				bookIndex = navBackstackEntry.arguments?.getInt(SELECTED_BOOK_INDEX)!!,
 				navigateToWebView = { url ->
 					val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
