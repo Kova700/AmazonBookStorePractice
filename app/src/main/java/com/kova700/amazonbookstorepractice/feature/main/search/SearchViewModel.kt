@@ -1,6 +1,5 @@
 package com.kova700.amazonbookstorepractice.feature.main.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.data.BookSearchRepository
@@ -29,23 +28,23 @@ class SearchViewModel @Inject constructor(
 
 	private fun loadSearchData() {
 		viewModelScope.launch {
-			bookSearchRepository.loadSearchData(
-				query = viewState.value.searchKeyWord,
-				sort = viewState.value.sortType
-			).onSuccess { books ->
+			runCatching {
+				bookSearchRepository.loadSearchData(
+					query = viewState.value.searchKeyWord,
+					sort = viewState.value.sortType
+				)
+			}.onSuccess { books ->
 				updateState {
 					copy(
 						loadState = LoadState.SUCCESS,
 						books = books
 					)
 				}
-			}
-				.onFailure {
-					updateState {
-						Log.d("로그", "SearchViewModel: loadSearchData() - throwable :$it")
-						copy(loadState = LoadState.ERROR)
-					}
+			}.onFailure {
+				updateState {
+					copy(loadState = LoadState.ERROR)
 				}
+			}
 		}
 	}
 
