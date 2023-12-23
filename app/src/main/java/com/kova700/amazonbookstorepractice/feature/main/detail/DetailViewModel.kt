@@ -3,7 +3,9 @@ package com.kova700.amazonbookstorepractice.feature.main.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.kova700.amazonbookstorepractice.data.Book
+import com.kova700.amazonbookstorepractice.data.BookEntity
 import com.kova700.amazonbookstorepractice.data.BookSearchRepository
+import com.kova700.amazonbookstorepractice.data.toEntity
 import com.kova700.amazonbookstorepractice.feature.main.SELECTED_BOOK_INDEX
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,7 @@ class DetailViewModel @Inject constructor(
 
 	private val bookIndex: Int = savedStateHandle.get<Int>(SELECTED_BOOK_INDEX) ?: -1
 
-	private val _viewState = MutableStateFlow<Book>(Book.Default)
+	private val _viewState = MutableStateFlow<BookEntity>(BookEntity.Default)
 	val viewState = _viewState.asStateFlow()
 
 	init {
@@ -26,6 +28,6 @@ class DetailViewModel @Inject constructor(
 	}
 
 	private fun loadBook(index: Int) {
-		_viewState.value = bookSearchRepository.getBook(index)
+		_viewState.value = bookSearchRepository.getBook(index).toEntity()
 	}
 }

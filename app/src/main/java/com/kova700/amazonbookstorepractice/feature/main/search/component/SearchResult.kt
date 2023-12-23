@@ -12,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kova700.amazonbookstorepractice.data.Book
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun SearchResult(
 	modifier: Modifier = Modifier,
 	onItemClick: (Int) -> Unit = {},
-	books: List<Book>,
+	books: ImmutableList<Book>,
 ) {
 	LazyVerticalGrid(
 		columns = GridCells.Fixed(2),
