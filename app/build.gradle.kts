@@ -47,6 +47,18 @@ android {
 	}
 	kotlinOptions {
 		jvmTarget = "1.8"
+		if (project.findProperty("composeCompilerReports") == "true") {
+			freeCompilerArgs += listOf(
+				"-P",
+				"plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_compiler"
+			)
+		}
+		if (project.findProperty("composeCompilerMetrics") == "true") {
+			freeCompilerArgs += listOf(
+				"-P",
+				"plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_compiler"
+			)
+		}
 	}
 	buildFeatures {
 		compose = true
@@ -88,6 +100,8 @@ dependencies {
 	implementation("androidx.navigation:navigation-compose:2.7.6")
 	// Kotlinx-serialization
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+	// Kotlinx-collections-immutable
+	implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6")
 	// Coil
 	implementation("io.coil-kt:coil-compose:2.5.0")
 	// Ktor
