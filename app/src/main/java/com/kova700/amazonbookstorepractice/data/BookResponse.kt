@@ -1,7 +1,5 @@
 package com.kova700.amazonbookstorepractice.data
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -32,6 +30,23 @@ data class Book(
 	val translators: List<String>,
 	val url: String,
 	@SerialName("sale_price") val salePrice: Int
-)
+){
+	companion object{
+		val Default = Book(
+			title = "",
+			thumbnail = "",
+			authors = emptyList(),
+			price = 0,
+			contents = "",
+			datetime = "",
+			isbn = "",
+			publisher = "",
+			status = "",
+			translators = emptyList(),
+			url = "",
+			salePrice = 0
+		)
+	}
+}
 
 //TODO : search.daum => m.search.daum으로 수정해주는 로직 필요

@@ -28,16 +28,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.kova700.amazonbookstorepractice.feature.main.search.SearchViewModel
 
 @Composable
 fun DetailScreen(
-	searchViewModel: SearchViewModel = hiltViewModel(),
-	bookIndex: Int,
+	detailViewModel: DetailViewModel = hiltViewModel(),
 	navigateToWebView: (String) -> Unit = {}
 ) {
-	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
-	val book = searchViewState.books[bookIndex]
+	val book by detailViewModel.viewState.collectAsStateWithLifecycle()
 
 	DetailScreen(
 		title = book.title,
