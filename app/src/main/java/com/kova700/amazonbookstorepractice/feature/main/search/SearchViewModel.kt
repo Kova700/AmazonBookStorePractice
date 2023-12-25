@@ -3,6 +3,7 @@ package com.kova700.amazonbookstorepractice.feature.main.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.data.BookSearchRepository
+import com.kova700.amazonbookstorepractice.data.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,7 @@ class SearchViewModel @Inject constructor(
 				updateState {
 					copy(
 						loadState = LoadState.SUCCESS,
-						books = books.toImmutableList()
+						books = books.toEntity().toImmutableList()
 					)
 				}
 			}.onFailure {
