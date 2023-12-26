@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.feature.main.search.component
+package com.kova700.amazonbookstorepractice.ui.main.search.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +18,6 @@ fun SearchResultError(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewError(){
+fun PreviewError() {
 	SearchResultError()
 }

@@ -1,7 +1,7 @@
-package com.kova700.amazonbookstorepractice.di
+package com.kova700.amazonbookstorepractice.data.di
 
-import com.kova700.amazonbookstorepractice.data.BookSearchRepository
-import com.kova700.amazonbookstorepractice.data.BookSearchRepositoryImpl
+import com.kova700.amazonbookstorepractice.data.repositoryiml.BookSearchRepositoryImpl
+import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

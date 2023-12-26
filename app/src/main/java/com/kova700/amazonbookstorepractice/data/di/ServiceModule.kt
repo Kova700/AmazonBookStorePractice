@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.di
+package com.kova700.amazonbookstorepractice.data.di
 
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
 import com.kova700.amazonbookstorepractice.data.api.KtorBookSearchService

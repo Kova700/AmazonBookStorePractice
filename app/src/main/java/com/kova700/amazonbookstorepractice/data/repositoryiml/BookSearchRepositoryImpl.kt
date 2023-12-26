@@ -1,7 +1,10 @@
-package com.kova700.amazonbookstorepractice.data
+package com.kova700.amazonbookstorepractice.data.repositoryiml
 
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
-import com.kova700.amazonbookstorepractice.feature.main.search.KakaoBookSearchSortType
+import com.kova700.amazonbookstorepractice.data.mapper.toDomain
+import com.kova700.amazonbookstorepractice.domain.model.Book
+import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
+import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
 import javax.inject.Inject
 
 class BookSearchRepositoryImpl @Inject constructor(
@@ -22,7 +25,7 @@ class BookSearchRepositoryImpl @Inject constructor(
 		return bookSearchService.searchBooks(
 			query = query, page = page,
 			sort = sort, size = size
-		).books.also { books ->
+		).books.toDomain().also { books ->
 			cachedBooks.addAll(books)
 		}
 	}

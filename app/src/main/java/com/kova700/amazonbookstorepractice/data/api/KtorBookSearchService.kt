@@ -1,7 +1,7 @@
 package com.kova700.amazonbookstorepractice.data.api
 
-import com.kova700.amazonbookstorepractice.data.BookResponse
-import com.kova700.amazonbookstorepractice.feature.main.search.KakaoBookSearchSortType
+import com.kova700.amazonbookstorepractice.data.response.BookResponse
+import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
