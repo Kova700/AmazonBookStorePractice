@@ -28,16 +28,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.kova700.amazonbookstorepractice.feature.main.search.SearchViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun DetailScreen(
-	searchViewModel: SearchViewModel = hiltViewModel(),
-	bookIndex: Int,
+	detailViewModel: DetailViewModel = hiltViewModel(),
 	navigateToWebView: (String) -> Unit = {}
 ) {
-	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
-	val book = searchViewState.books[bookIndex]
+	val book by detailViewModel.viewState.collectAsStateWithLifecycle()
 
 	DetailScreen(
 		title = book.title,
@@ -59,14 +58,14 @@ fun DetailScreen(
 fun DetailScreen(
 	title: String,
 	thumbnail: String,
-	authors: List<String>,
+	authors: ImmutableList<String>,
 	price: Int,
 	contents: String,
 	datetime: String,
 	isbn: String,
 	publisher: String,
 	status: String,
-	translators: List<String>,
+	translators: ImmutableList<String>,
 	url: String,
 	navigateToWebView: (String) -> Unit = {}
 ) {
@@ -158,12 +157,12 @@ fun PreviewDetail() {
 	DetailScreen(
 		title = "책 제목 블라블라블라블라",
 		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",
-		authors = listOf("작가이름은", "마바사"),
+		authors = persistentListOf("작가이름은", "마바사"),
 		price = 30600,
 		datetime = "2021-10-02",
 		isbn = "12345648-154648454",
 		status = "정상 판매",
-		translators = listOf("ABC", "CSV"),
+		translators = persistentListOf("ABC", "CSV"),
 		url = "https://search.daum.net/search?w=bookpage&bookId=4851688&q=%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C+with+Kotlin+%EC%95%B1+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D+%EA%B0%80%EC%9D%B4%EB%93%9C",
 		contents = "최신 버전에 맞춰 완벽하게 실습할 수 있는 코틀린 안드로이드 앱 개발 도서! 코틀린, 안드로이드, 안드로이드 스튜디오! 코틀린으로 안드로이드 앱을 개발하려면 살펴봐야 할 사항이 많습니다. 특히 코틀린 1.4.20 버전부터는 코틀린 익스텐션이 폐기되는 터라 입문자로서 더욱 혼란스럽습니다. 〈이것이 안드로이드다 with 코틀린(개정판)〉은 최신 버전에 대응해 코틀린 익스텐션 코드를 걷어내고 뷰바인딩 코드로 전면 수정했습니다. 물론 안드로이드 스튜디오 4.1",
 		publisher = "블라블라 출판사"
