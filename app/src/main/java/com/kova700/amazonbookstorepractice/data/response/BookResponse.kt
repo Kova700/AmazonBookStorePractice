@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BookResponse(
-	@SerialName("documents") val books: List<NetworkBook>,
+	@SerialName("documents") val books: List<NetworkBook> = emptyList(),
 	@SerialName("meta") val meta: Meta
 )
 
