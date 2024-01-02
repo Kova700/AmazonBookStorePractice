@@ -13,4 +13,21 @@ data class Book(
 	val translators: List<String>,
 	val url: String,
 	val salePrice: Int
-)
+) {
+	companion object {
+		val Default = Book(
+			title = "",
+			thumbnail = "",
+			authors = listOf(),
+			price = 0,
+			contents = "",
+			datetime = "",
+			isbn = "",
+			publisher = "",
+			status = "",
+			translators = listOf(),
+			url = "",
+			salePrice = 0
+		)
+	}
+}
