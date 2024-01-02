@@ -3,6 +3,7 @@ package com.kova700.amazonbookstorepractice.ui.main.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
+import com.kova700.amazonbookstorepractice.ui.main.mapper.toItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +37,7 @@ class SearchViewModel @Inject constructor(
 				getSearchedBookUseCase(
 					query = viewState.value.searchKeyWord,
 					sort = viewState.value.sortType
-				)
+				).map { it.toItem() }
 			}.onSuccess { books ->
 				updateState {
 					copy(

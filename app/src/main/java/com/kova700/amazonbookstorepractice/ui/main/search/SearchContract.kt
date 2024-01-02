@@ -1,7 +1,7 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.compose.runtime.Immutable
-import com.kova700.amazonbookstorepractice.domain.model.Book
+import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -10,7 +10,7 @@ data class SearchViewState(
 	val searchKeyWord: String,
 	val loadState: LoadState,
 	val sortType: KakaoBookSearchSortType,
-	val books: ImmutableList<Book>
+	val books: ImmutableList<BookItem>
 ) {
 	companion object {
 		val Default = SearchViewState(
