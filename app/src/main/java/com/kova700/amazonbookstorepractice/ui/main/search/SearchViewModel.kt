@@ -1,5 +1,6 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
@@ -31,7 +32,8 @@ class SearchViewModel @Inject constructor(
 		updateState { copy(searchKeyWord = keyword) }
 	}
 
-	private fun loadSearchData() {
+	@VisibleForTesting
+	fun loadSearchData() {
 		viewModelScope.launch {
 			runCatching {
 				getSearchedBookUseCase(
