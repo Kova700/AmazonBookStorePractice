@@ -1,8 +1,8 @@
 package com.kova700.amazonbookstorepractice.domain.usecase
 
 import com.kova700.amazonbookstorepractice.domain.model.Book
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
-import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
 import javax.inject.Inject
 
 class GetSearchedBookUseCase @Inject constructor(

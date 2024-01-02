@@ -3,8 +3,8 @@ package com.kova700.amazonbookstorepractice.data.repository
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
 import com.kova700.amazonbookstorepractice.data.mapper.toDomain
 import com.kova700.amazonbookstorepractice.domain.model.Book
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
-import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
 import javax.inject.Inject
 
 class BookSearchRepositoryImpl @Inject constructor(

@@ -1,6 +1,7 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.compose.runtime.Immutable
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -26,9 +27,4 @@ enum class LoadState {
 	SUCCESS,
 	LOADING,
 	ERROR
-}
-
-enum class KakaoBookSearchSortType {
-	ACCURACY, //  정확도 (기본값)
-	RECENCY,  //  최신순
 }
