@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.feature.main
+package com.kova700.amazonbookstorepractice.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -7,9 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.kova700.amazonbookstorepractice.feature.main.detail.DetailScreen
-import com.kova700.amazonbookstorepractice.feature.main.detail.DetailWebView
-import com.kova700.amazonbookstorepractice.feature.main.search.SearchScreen
+import com.kova700.amazonbookstorepractice.ui.main.detail.DetailScreen
+import com.kova700.amazonbookstorepractice.ui.main.detail.DetailWebView
+import com.kova700.amazonbookstorepractice.ui.main.search.SearchScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 

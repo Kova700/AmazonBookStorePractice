@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.feature.main.search
+package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,10 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kova700.amazonbookstorepractice.feature.main.search.component.SearchBar
-import com.kova700.amazonbookstorepractice.feature.main.search.component.SearchResult
-import com.kova700.amazonbookstorepractice.feature.main.search.component.SearchResultError
-import com.kova700.amazonbookstorepractice.feature.main.search.component.SearchResultLoading
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchBar
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultError
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
 
 @Composable
 fun SearchScreen(

@@ -1,9 +1,8 @@
-package com.kova700.amazonbookstorepractice.feature.main.search
+package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kova700.amazonbookstorepractice.data.BookSearchRepository
-import com.kova700.amazonbookstorepractice.data.toEntity
+import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-	private val bookSearchRepository: BookSearchRepository
+	private val getSearchedBookUseCase: GetSearchedBookUseCase
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
@@ -32,7 +31,7 @@ class SearchViewModel @Inject constructor(
 	private fun loadSearchData() {
 		viewModelScope.launch {
 			runCatching {
-				bookSearchRepository.loadSearchData(
+				getSearchedBookUseCase(
 					query = viewState.value.searchKeyWord,
 					sort = viewState.value.sortType
 				)
@@ -40,7 +39,7 @@ class SearchViewModel @Inject constructor(
 				updateState {
 					copy(
 						loadState = LoadState.SUCCESS,
-						books = books.toEntity().toImmutableList()
+						books = books.toImmutableList()
 					)
 				}
 			}.onFailure {

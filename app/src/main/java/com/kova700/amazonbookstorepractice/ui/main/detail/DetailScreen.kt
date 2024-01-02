@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.feature.main.detail
+package com.kova700.amazonbookstorepractice.ui.main.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
