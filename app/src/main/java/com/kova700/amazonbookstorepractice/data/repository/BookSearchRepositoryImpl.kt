@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.data.repositoryiml
+package com.kova700.amazonbookstorepractice.data.repository
 
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
 import com.kova700.amazonbookstorepractice.data.mapper.toDomain
@@ -30,6 +30,7 @@ class BookSearchRepositoryImpl @Inject constructor(
 		}
 	}
 
+	//인덱스에 없는경우 예외 처리 해야함
 	override fun getBook(index: Int): Book {
 		return cachedBooks[index]
 	}
