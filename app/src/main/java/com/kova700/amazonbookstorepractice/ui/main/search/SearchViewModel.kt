@@ -1,8 +1,10 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
+import com.kova700.amazonbookstorepractice.ui.main.mapper.toItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +22,8 @@ class SearchViewModel @Inject constructor(
 	val viewState = _viewState.asStateFlow()
 
 	fun searchKeyword() {
+		if (viewState.value.searchKeyWord.isBlank()) return
+
 		updateState { copy(loadState = LoadState.LOADING) }
 		loadSearchData()
 	}
@@ -28,13 +32,14 @@ class SearchViewModel @Inject constructor(
 		updateState { copy(searchKeyWord = keyword) }
 	}
 
-	private fun loadSearchData() {
+	@VisibleForTesting
+	fun loadSearchData() {
 		viewModelScope.launch {
 			runCatching {
 				getSearchedBookUseCase(
 					query = viewState.value.searchKeyWord,
 					sort = viewState.value.sortType
-				)
+				).map { it.toItem() }
 			}.onSuccess { books ->
 				updateState {
 					copy(

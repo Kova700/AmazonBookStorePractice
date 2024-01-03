@@ -1,10 +1,10 @@
-package com.kova700.amazonbookstorepractice.data.repositoryiml
+package com.kova700.amazonbookstorepractice.data.repository
 
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
 import com.kova700.amazonbookstorepractice.data.mapper.toDomain
 import com.kova700.amazonbookstorepractice.domain.model.Book
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
-import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
 import javax.inject.Inject
 
 class BookSearchRepositoryImpl @Inject constructor(
@@ -30,6 +30,7 @@ class BookSearchRepositoryImpl @Inject constructor(
 		}
 	}
 
+	//인덱스에 없는경우 예외 처리 해야함
 	override fun getBook(index: Int): Book {
 		return cachedBooks[index]
 	}

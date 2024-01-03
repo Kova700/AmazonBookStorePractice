@@ -1,7 +1,7 @@
 package com.kova700.amazonbookstorepractice.domain.repository
 
 import com.kova700.amazonbookstorepractice.domain.model.Book
-import com.kova700.amazonbookstorepractice.ui.main.search.KakaoBookSearchSortType
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 
 interface BookSearchRepository {
 

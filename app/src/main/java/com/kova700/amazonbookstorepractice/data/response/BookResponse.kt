@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BookResponse(
-	@SerialName("documents") val books: List<NetworkBook>,
-	val meta: Meta
+	@SerialName("documents") val books: List<NetworkBook> = emptyList(),
+	@SerialName("meta") val meta: Meta
 )
 
 @Serializable
@@ -18,17 +18,17 @@ data class Meta(
 
 @Serializable
 data class NetworkBook(
-	val title: String,
-	val thumbnail: String,
-	val authors: List<String>,
-	val price: Int,
-	val contents: String,
-	val datetime: String,
-	val isbn: String,
-	val publisher: String,
-	val status: String,
-	val translators: List<String>,
-	val url: String,
+	@SerialName("title") val title: String,
+	@SerialName("thumbnail") val thumbnail: String,
+	@SerialName("authors") val authors: List<String>,
+	@SerialName("price") val price: Int,
+	@SerialName("contents") val contents: String,
+	@SerialName("datetime") val datetime: String,
+	@SerialName("isbn") val isbn: String,
+	@SerialName("publisher") val publisher: String,
+	@SerialName("status") val status: String,
+	@SerialName("translators") val translators: List<String>,
+	@SerialName("url") val url: String,
 	@SerialName("sale_price") val salePrice: Int
 )
 
