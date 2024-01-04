@@ -5,6 +5,7 @@ import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.search.LoadState
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
+import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -34,10 +35,7 @@ class SearchViewModelTest {
 
 	@Test
 	fun `초기 값 검사`() {
-		assertEquals("", searchViewModel.viewState.value.searchKeyWord)
-		assertEquals(LoadState.SUCCESS, searchViewModel.viewState.value.loadState)
-		assertEquals(KakaoBookSearchSortType.ACCURACY, searchViewModel.viewState.value.sortType)
-		assertTrue(searchViewModel.viewState.value.books.isEmpty())
+		assertEquals(SearchViewState.Default, searchViewModel.viewState.value)
 	}
 
 	@Test
