@@ -1,37 +1,30 @@
 package com.kova700.amazonbookstorepractice.search
 
+import com.kova700.amazonbookstorepractice.MainCoroutineRule
 import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.search.LoadState
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
+
+	@get:Rule
+	val coroutineRule = MainCoroutineRule()
 
 	private val getSearchedBookUseCase = mock<GetSearchedBookUseCase>()
 
 	//lateinit var, @InjectMocks는 왜 작동하지 않는걸까..?
 	private val searchViewModel = SearchViewModel(getSearchedBookUseCase)
-
-	@Before
-	fun setUp() {
-		Dispatchers.setMain(UnconfinedTestDispatcher())
-	}
 
 	@Test
 	fun `초기 값 검사`() {
