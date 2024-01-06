@@ -26,6 +26,15 @@ class SearchViewModelTest {
 	//lateinit var, @InjectMocks는 왜 작동하지 않는걸까..?
 	private val searchViewModel = SearchViewModel(getSearchedBookUseCase)
 
+	private val mockSearchResponse = listOf(
+		Book.Default.copy(
+			title = "테스트 Book 1"
+		),
+		Book.Default.copy(
+			title = "테스트 Book 2"
+		)
+	)
+
 	@Test
 	fun `초기 값 검사`() {
 		assertEquals(SearchViewState.Default, searchViewModel.viewState.value)
@@ -36,21 +45,12 @@ class SearchViewModelTest {
 
 		val emptySearchKeyword = ""
 
-		val mockResponse = listOf(
-			Book.Default.copy(
-				title = "테스트 Book 1"
-			),
-			Book.Default.copy(
-				title = "테스트 Book 2"
-			)
-		)
-
 		whenever(
 			getSearchedBookUseCase.invoke(
 				query = emptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
-		).thenReturn(mockResponse)
+		).thenReturn(mockSearchResponse)
 
 		searchViewModel.changeSearchKeyword(emptySearchKeyword)
 		searchViewModel.searchKeyword()
@@ -68,21 +68,12 @@ class SearchViewModelTest {
 
 		val nonEmptySearchKeyword = "자바"
 
-		val mockResponse = listOf(
-			Book.Default.copy(
-				title = "테스트 Book 1"
-			),
-			Book.Default.copy(
-				title = "테스트 Book 2"
-			)
-		)
-
 		whenever(
 			getSearchedBookUseCase.invoke(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
-		).thenReturn(mockResponse)
+		).thenReturn(mockSearchResponse)
 
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
@@ -92,46 +83,36 @@ class SearchViewModelTest {
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
 
-		println(searchViewModel.viewState.value)
-		assertEquals(mockResponse.size, searchViewModel.viewState.value.books.size)
+		assertEquals(mockSearchResponse.size, searchViewModel.viewState.value.books.size)
 		assertEquals(LoadState.SUCCESS, searchViewModel.viewState.value.loadState)
 	}
 
 	@Test
 	fun `검색어 검색 시, Uistate가 LoadState_LOADING으로 바뀐다`() = runTest {
 
-//		val nonEmptySearchKeyword = "자바"
-//
-//		val mockResponse = listOf(
-//			Book.Default.copy(
-//				title = "테스트 Book 1"
-//			),
-//			Book.Default.copy(
-//				title = "테스트 Book 2"
-//			)
-//		)
-//
-//		whenever(
-//			getSearchedBookUseCase.invoke(
-//				query = nonEmptySearchKeyword,
-//				sort = KakaoBookSearchSortType.ACCURACY
-//			)
-//		).thenReturn(mockResponse)
-//
-//		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
-//		searchViewModel.searchKeyword()
+		val nonEmptySearchKeyword = "자바"
 
-		//TODO
-	}
+		whenever(
+			getSearchedBookUseCase.invoke(
+				query = nonEmptySearchKeyword,
+				sort = KakaoBookSearchSortType.ACCURACY
+			)
+		).thenReturn(mockSearchResponse)
 
-	@Test
-	fun `검색 성공 시 Uistate가 LoadState_SUCCESS으로 바뀐다`() {
-		//TODO
-	}
+		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.searchKeyword(isLoadingTest = true)
 
-	@Test
-	fun `검색 실패 시 Uistate가 LoadState_ERROR으로 바뀐다`() {
-		//TODO
+		assertEquals(LoadState.LOADING, searchViewModel.viewState.value.loadState)
 	}
+//
+//	@Test
+//	fun `검색 성공 시 Uistate가 LoadState_SUCCESS으로 바뀐다`() {
+//		//TODO
+//	}
+//
+//	@Test
+//	fun `검색 실패 시 Uistate가 LoadState_ERROR으로 바뀐다`() {
+//		//TODO
+//	}
 
 }

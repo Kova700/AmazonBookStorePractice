@@ -14,17 +14,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-	private val getSearchedBookUseCase: GetSearchedBookUseCase
+	private val getSearchedBookUseCase: GetSearchedBookUseCase,
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
 		MutableStateFlow(SearchViewState.Default)
 	val viewState = _viewState.asStateFlow()
 
-	fun searchKeyword() {
+	fun searchKeyword(isLoadingTest: Boolean = false) {
 		if (viewState.value.searchKeyWord.isBlank()) return
 
 		updateState { copy(loadState = LoadState.LOADING) }
+		if (isLoadingTest) return
+
 		loadSearchData()
 	}
 
