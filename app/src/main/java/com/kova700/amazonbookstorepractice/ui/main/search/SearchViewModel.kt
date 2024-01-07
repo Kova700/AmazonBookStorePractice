@@ -21,12 +21,10 @@ class SearchViewModel @Inject constructor(
 		MutableStateFlow(SearchViewState.Default)
 	val viewState = _viewState.asStateFlow()
 
-	fun searchKeyword(isLoadingTest: Boolean = false) {
+	fun searchKeyword() {
 		if (viewState.value.searchKeyWord.isBlank()) return
 
 		updateState { copy(loadState = LoadState.LOADING) }
-		if (isLoadingTest) return
-
 		loadSearchData()
 	}
 

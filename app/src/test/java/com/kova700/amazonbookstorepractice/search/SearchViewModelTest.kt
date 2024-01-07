@@ -7,10 +7,14 @@ import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.search.LoadState
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.doSuspendableAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -97,10 +101,13 @@ class SearchViewModelTest {
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
-		).thenReturn(mockSearchResponse)
+		).doSuspendableAnswer {
+			withContext(Dispatchers.IO) { delay(5000) }
+			mockSearchResponse
+		}
 
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
-		searchViewModel.searchKeyword(isLoadingTest = true)
+		searchViewModel.searchKeyword()
 
 		assertEquals(LoadState.LOADING, searchViewModel.viewState.value.loadState)
 	}
