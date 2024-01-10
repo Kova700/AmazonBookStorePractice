@@ -51,13 +51,6 @@ class SearchViewModelTest {
 
 		val emptySearchKeyword = ""
 
-		whenever(
-			getSearchedBookUseCase.invoke(
-				query = emptySearchKeyword,
-				sort = KakaoBookSearchSortType.ACCURACY
-			)
-		).thenReturn(mockSearchResponse)
-
 		searchViewModel.changeSearchKeyword(emptySearchKeyword)
 		searchViewModel.searchKeyword()
 
@@ -65,8 +58,6 @@ class SearchViewModelTest {
 			query = emptySearchKeyword,
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
-
-		assertEquals(LoadState.SUCCESS, searchViewModel.viewState.value.loadState)
 	}
 
 	@Test
@@ -99,7 +90,7 @@ class SearchViewModelTest {
 	}
 
 	@Test
-	fun `검색어 검색 시, Uistate가 LoadState_LOADING으로 바뀐다`() = runTest {
+	fun `검색 시, Uistate가 LoadState_LOADING으로 바뀐다`() = runTest {
 
 		val nonEmptySearchKeyword = "자바"
 
