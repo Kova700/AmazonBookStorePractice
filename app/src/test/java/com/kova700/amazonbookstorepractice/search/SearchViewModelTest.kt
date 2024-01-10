@@ -4,11 +4,10 @@ import com.kova700.amazonbookstorepractice.MainCoroutineRule
 import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
-import com.kova700.amazonbookstorepractice.ui.main.mapper.toItem
+import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
 import com.kova700.amazonbookstorepractice.ui.main.search.LoadState
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
@@ -48,7 +47,6 @@ class SearchViewModelTest {
 
 	@Test
 	fun `검색어가 비어있다면 검색되지 않음`() = runTest {
-
 		val emptySearchKeyword = ""
 
 		searchViewModel.changeSearchKeyword(emptySearchKeyword)
@@ -62,7 +60,6 @@ class SearchViewModelTest {
 
 	@Test
 	fun `검색어가 비어있지 않다면 검색 됨`() = runTest {
-
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
@@ -80,10 +77,12 @@ class SearchViewModelTest {
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
 
+		val books = mockSearchResponse.toItemList()
+
 		assertEquals(
 			SearchViewState.Default.copy(
 				searchKeyWord = nonEmptySearchKeyword,
-				books = mockSearchResponse.map { it.toItem() }.toImmutableList(),
+				books = books,
 				loadState = LoadState.SUCCESS
 			), searchViewModel.viewState.value
 		)
@@ -91,7 +90,6 @@ class SearchViewModelTest {
 
 	@Test
 	fun `검색 시, Uistate가 LoadState_LOADING으로 바뀐다`() = runTest {
-
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(

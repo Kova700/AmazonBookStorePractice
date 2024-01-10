@@ -19,3 +19,5 @@ fun Book.toItem() =
 		url = url,
 		salePrice = salePrice
 	)
+
+fun List<Book>.toItemList() = this.map { it.toItem() }.toImmutableList()
