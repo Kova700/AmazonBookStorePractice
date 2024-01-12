@@ -109,10 +109,21 @@ class SearchViewModelTest {
 		//withContext(Dispatchers.IO)의 delay로 인해 루트 코루틴이 먼저 완료되어버림으로 상태는 아직도 Loading
 	}
 
-//	@Test
-//	fun `검색 실패 시 Uistate가 LoadState_ERROR으로 바뀐다`() {
-	//whenever(userServices.getUsers()).thenThrow(RuntimeException("Error"))
-//		//TODO
-//	}
+	@Test
+	fun `검색 실패 시 Uistate가 LoadState_ERROR으로 바뀐다`() = runTest {
+		val nonEmptySearchKeyword = "자바"
+
+		whenever(
+			getSearchedBookUseCase.invoke(
+				query = nonEmptySearchKeyword,
+				sort = KakaoBookSearchSortType.ACCURACY
+			)
+		).thenThrow(RuntimeException("Search API is Failed"))
+
+		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.searchKeyword()
+
+		assertEquals(LoadState.ERROR, searchViewModel.viewState.value.loadState)
+	}
 
 }
