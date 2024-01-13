@@ -18,6 +18,7 @@ class BookSearchRepositoryImpl @Inject constructor(
 	//페이징해서 내용물을 가져오면, cachedBooks에 내용물이 추가되는 방식으로 수정되어야함
 
 	private val cachedBooks = mutableListOf<Book>()
+	private var cachedSearchKeyword = ""
 
 	override suspend fun loadSearchData(
 		query: String, sort: KakaoBookSearchSortType, page: Int, size: Int
@@ -26,6 +27,10 @@ class BookSearchRepositoryImpl @Inject constructor(
 			query = query, page = page,
 			sort = sort, size = size
 		).books.toDomain().also { books ->
+			if (query != cachedSearchKeyword) {
+				cachedBooks.clear()
+				cachedSearchKeyword = query
+			}
 			cachedBooks.addAll(books)
 		}
 	}
