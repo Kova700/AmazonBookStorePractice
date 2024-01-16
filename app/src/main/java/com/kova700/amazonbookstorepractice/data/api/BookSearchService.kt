@@ -7,7 +7,7 @@ interface BookSearchService {
 
 	suspend fun searchBooks(
 		query: String,
-		sort: KakaoBookSearchSortType,
+		sort: String,
 		page: Int,
 		size: Int
 	): BookResponse

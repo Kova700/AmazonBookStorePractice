@@ -1,7 +1,9 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.GetPagingSearchBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
@@ -72,6 +74,17 @@ class SearchViewModel @Inject constructor(
 					copy(loadState = LoadState.ERROR)
 				}
 			}
+		}
+	}
+
+	fun onKeywordClear() {
+		changeSearchKeyword("")
+	}
+
+	fun onSortOptionChange(sortOption: KakaoBookSearchSortType) {
+		Log.d("로그", "SearchViewModel: onSortOptionChange() - sortOption : $sortOption")
+		updateState {
+			copy(sortType = sortOption)
 		}
 	}
 
