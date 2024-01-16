@@ -11,11 +11,13 @@ fun Book.toItem() =
 		authors = authors.toImmutableList(),
 		price = price,
 		contents = contents,
-		datetime = contents,
-		isbn = contents,
+		datetime = datetime,
+		isbn = isbn,
 		publisher = publisher,
 		status = status,
 		translators = translators.toImmutableList(),
 		url = url,
 		salePrice = salePrice
 	)
+
+fun List<Book>.toItemList() = this.map { it.toItem() }.toImmutableList()
