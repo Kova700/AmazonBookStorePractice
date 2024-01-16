@@ -11,14 +11,14 @@ data class SearchViewState(
 	val searchKeyWord: String,
 	val loadState: LoadState,
 	val sortType: KakaoBookSearchSortType,
-	val books: ImmutableList<BookItem>
+	val books: ImmutableList<BookItem>,
 ) {
 	companion object {
 		val Default = SearchViewState(
 			searchKeyWord = "",
-			loadState = LoadState.SUCCESS,
+			loadState = LoadState.EMPTY,
 			sortType = KakaoBookSearchSortType.ACCURACY,
-			books = persistentListOf()
+			books = persistentListOf(),
 		)
 	}
 }
@@ -26,5 +26,6 @@ data class SearchViewState(
 enum class LoadState {
 	SUCCESS,
 	LOADING,
-	ERROR
+	ERROR,
+	EMPTY
 }

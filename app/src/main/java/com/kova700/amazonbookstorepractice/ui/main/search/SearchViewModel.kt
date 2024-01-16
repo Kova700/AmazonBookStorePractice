@@ -2,6 +2,7 @@ package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kova700.amazonbookstorepractice.domain.usecase.GetPagingSearchBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
 	private val getSearchedBookUseCase: GetSearchedBookUseCase,
+	private val getPagingSearchBookUseCase: GetPagingSearchBookUseCase
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
@@ -27,7 +29,7 @@ class SearchViewModel @Inject constructor(
 	}
 
 	fun changeSearchKeyword(keyword: String) {
-		updateState { copy(searchKeyWord = keyword) }
+		updateState { copy(searchKeyWord = keyword.trim()) }
 	}
 
 	private fun loadSearchData() {
@@ -35,13 +37,34 @@ class SearchViewModel @Inject constructor(
 			runCatching {
 				getSearchedBookUseCase(
 					query = viewState.value.searchKeyWord,
-					sort = viewState.value.sortType
+					sort = viewState.value.sortType,
 				).toItemList()
 			}.onSuccess { books ->
 				updateState {
 					copy(
+						loadState = if (books.isNotEmpty()) LoadState.SUCCESS else LoadState.EMPTY,
+						books = books,
+					)
+				}
+			}.onFailure {
+				updateState {
+					copy(loadState = LoadState.ERROR)
+				}
+			}
+		}
+	}
+
+	fun loadNextData() {
+		updateState { copy(loadState = LoadState.LOADING) }
+
+		viewModelScope.launch {
+			runCatching {
+				getPagingSearchBookUseCase().toItemList()
+			}.onSuccess { books ->
+				updateState {
+					copy(
 						loadState = LoadState.SUCCESS,
-						books = books
+						books = books,
 					)
 				}
 			}.onFailure {

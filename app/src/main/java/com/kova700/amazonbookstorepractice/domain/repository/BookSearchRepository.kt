@@ -12,6 +12,8 @@ interface BookSearchRepository {
 		size: Int = DEFAULT_PAGING_SIZE
 	): List<Book>
 
+	suspend fun loadMoreSearchData(): List<Book>
+
 	fun getBook(index: Int): Book
 
 	companion object {
