@@ -1,13 +1,11 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
-import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -41,7 +39,8 @@ fun SearchScreen(
 		navigateToDetailScreen = navigateToDetailScreen,
 		onValueChange = searchViewModel::changeSearchKeyword,
 		onSearchClick = searchViewModel::searchKeyword,
-		onLoadNextData = searchViewModel::loadNextData
+		onLoadNextData = searchViewModel::loadNextData,
+		onKeywordClear = searchViewModel::onKeywordClear
 	)
 
 }
@@ -52,7 +51,8 @@ fun SearchScreen(
 	navigateToDetailScreen: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
 	onSearchClick: () -> Unit,
-	onLoadNextData: () -> Unit
+	onLoadNextData: () -> Unit,
+	onKeywordClear: () -> Unit,
 ) {
 	val scope = rememberCoroutineScope()
 	val lazyGridState = rememberLazyGridState()
@@ -68,6 +68,7 @@ fun SearchScreen(
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
+			onKeywordClear = onKeywordClear,
 			onSearchClick = {
 				onSearchClick()
 				scope.launch {
@@ -155,6 +156,7 @@ fun SearchScreenPreview() {
 		navigateToDetailScreen = {},
 		onValueChange = {},
 		onSearchClick = {},
-		onLoadNextData = {}
+		onLoadNextData = {},
+		onKeywordClear = {}
 	)
 }

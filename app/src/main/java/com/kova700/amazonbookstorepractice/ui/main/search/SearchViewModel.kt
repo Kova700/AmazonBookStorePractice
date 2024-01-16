@@ -75,6 +75,10 @@ class SearchViewModel @Inject constructor(
 		}
 	}
 
+	fun onKeywordClear(){
+		changeSearchKeyword("")
+	}
+
 	private inline fun updateState(block: SearchViewState.() -> SearchViewState) {
 		_viewState.value = _viewState.value.block()
 	}
