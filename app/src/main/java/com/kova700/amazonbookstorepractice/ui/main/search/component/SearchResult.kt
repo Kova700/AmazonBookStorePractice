@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -16,18 +17,20 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun SearchResult(
+	lazyGridState: LazyGridState,
 	modifier: Modifier = Modifier,
-	onItemClick: (Int) -> Unit = {},
+	onItemClick: (Int) -> Unit,
 	books: ImmutableList<BookItem>,
 ) {
 	LazyVerticalGrid(
 		columns = GridCells.Fixed(2),
-		modifier = modifier
+		modifier = modifier,
+		state = lazyGridState
 	) {
 		itemsIndexed(
 			items = books,
 			key = { _, item ->
-				item.isbn //잡지 같은 경우 ISBN이 같을 수 있음 (추후 수정)
+				item.isbn + item.hashCode()
 			},
 		) { index, item ->
 			SearchResultItem(

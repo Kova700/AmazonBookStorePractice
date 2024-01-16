@@ -4,6 +4,7 @@ import com.kova700.amazonbookstorepractice.data.repository.BookSearchRepositoryI
 import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton

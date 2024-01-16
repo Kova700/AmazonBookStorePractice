@@ -8,10 +8,13 @@ import javax.inject.Inject
 class GetSearchedBookUseCase @Inject constructor(
 	private val repository: BookSearchRepository
 ) {
-	suspend operator fun invoke(query: String, sort: KakaoBookSearchSortType): List<Book> {
+	suspend operator fun invoke(
+		query: String,
+		sort: KakaoBookSearchSortType,
+	): List<Book> {
 		return repository.loadSearchData(
 			query = query,
-			sort = sort
+			sort = sort,
 		)
 	}
 }
