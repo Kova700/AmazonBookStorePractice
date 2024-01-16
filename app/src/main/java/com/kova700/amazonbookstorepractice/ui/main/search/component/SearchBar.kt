@@ -36,6 +36,7 @@ fun SearchBar(
 	onValueChange: (String) -> Unit,
 	onSearchClick: () -> Unit,
 	onKeywordClear: () -> Unit,
+	onOptionClick: () -> Unit,
 ) {
 
 	//TODO : 아래에 검색기록도 추가
@@ -61,7 +62,7 @@ fun SearchBar(
 			horizontalArrangement = Arrangement.Center,
 			verticalAlignment = Alignment.CenterVertically
 		) {
-			Spacer(modifier = Modifier.width(15.dp))
+			Spacer(modifier = Modifier.width(10.dp))
 
 			IconButton(onClick = onSearchClick) {
 				Icon(
@@ -90,6 +91,7 @@ fun SearchBar(
 					}
 				)
 			)
+
 			if (searchKeyword.isNotBlank()) {
 				IconButton(onClick = onKeywordClear) {
 					Icon(
@@ -99,6 +101,16 @@ fun SearchBar(
 					)
 				}
 			}
+
+			IconButton(onClick = onOptionClick) {
+				Icon(
+					imageVector = ImageVector.vectorResource(id = R.drawable.ic_search_option),
+					contentDescription = null,
+					tint = Color.Unspecified
+				)
+			}
+
+			Spacer(modifier = Modifier.width(10.dp))
 		}
 	}
 
@@ -112,5 +124,6 @@ fun SearchBarPreview() {
 		onValueChange = {},
 		onSearchClick = {},
 		onKeywordClear = {},
+		onOptionClick = {}
 	)
 }
