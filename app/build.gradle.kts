@@ -102,4 +102,6 @@ dependencies {
 	implementation("io.ktor:ktor-client-logging:$ktor_version")
 	implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
 	implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+	//Preferences DataStore
+	implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
