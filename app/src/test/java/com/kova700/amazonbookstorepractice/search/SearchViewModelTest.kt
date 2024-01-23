@@ -5,7 +5,7 @@ import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
-import com.kova700.amazonbookstorepractice.ui.main.search.LoadState
+import com.kova700.amazonbookstorepractice.ui.main.search.UiState
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
 import kotlinx.coroutines.Dispatchers
@@ -83,7 +83,7 @@ class SearchViewModelTest {
 			SearchViewState.Default.copy(
 				searchKeyWord = nonEmptySearchKeyword,
 				books = books,
-				loadState = LoadState.SUCCESS
+				uiState = UiState.SUCCESS
 			), searchViewModel.viewState.value
 		)
 	}
@@ -105,7 +105,7 @@ class SearchViewModelTest {
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
-		assertEquals(LoadState.LOADING, searchViewModel.viewState.value.loadState)
+		assertEquals(UiState.LOADING, searchViewModel.viewState.value.uiState)
 		//withContext(Dispatchers.IO)의 delay로 인해 루트 코루틴이 먼저 완료되어버림으로 상태는 아직도 Loading
 	}
 
@@ -123,7 +123,7 @@ class SearchViewModelTest {
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
-		assertEquals(LoadState.ERROR, searchViewModel.viewState.value.loadState)
+		assertEquals(UiState.ERROR, searchViewModel.viewState.value.uiState)
 	}
 
 }

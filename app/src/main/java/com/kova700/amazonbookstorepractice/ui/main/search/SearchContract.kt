@@ -9,23 +9,24 @@ import kotlinx.collections.immutable.persistentListOf
 @Immutable
 data class SearchViewState(
 	val searchKeyWord: String,
-	val loadState: LoadState,
+	val uiState: UiState,
 	val sortType: KakaoBookSearchSortType,
 	val books: ImmutableList<BookItem>,
 ) {
 	companion object {
 		val Default = SearchViewState(
 			searchKeyWord = "",
-			loadState = LoadState.EMPTY,
+			uiState = UiState.EMPTY,
 			sortType = KakaoBookSearchSortType.ACCURACY,
 			books = persistentListOf(),
 		)
 	}
 }
 
-enum class LoadState {
+enum class UiState {
 	SUCCESS,
 	LOADING,
 	ERROR,
-	EMPTY
+	EMPTY,
+	HISTORY
 }

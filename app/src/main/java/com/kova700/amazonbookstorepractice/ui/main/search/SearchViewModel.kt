@@ -1,6 +1,5 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
@@ -26,7 +25,7 @@ class SearchViewModel @Inject constructor(
 	fun searchKeyword() {
 		if (viewState.value.searchKeyWord.isBlank()) return
 
-		updateState { copy(loadState = LoadState.LOADING) }
+		updateState { copy(uiState = UiState.LOADING) }
 		loadSearchData()
 	}
 
@@ -44,20 +43,20 @@ class SearchViewModel @Inject constructor(
 			}.onSuccess { books ->
 				updateState {
 					copy(
-						loadState = if (books.isNotEmpty()) LoadState.SUCCESS else LoadState.EMPTY,
+						uiState = if (books.isNotEmpty()) UiState.SUCCESS else UiState.EMPTY,
 						books = books,
 					)
 				}
 			}.onFailure {
 				updateState {
-					copy(loadState = LoadState.ERROR)
+					copy(uiState = UiState.ERROR)
 				}
 			}
 		}
 	}
 
 	fun loadNextData() {
-		updateState { copy(loadState = LoadState.LOADING) }
+		updateState { copy(uiState = UiState.LOADING) }
 
 		viewModelScope.launch {
 			runCatching {
@@ -65,14 +64,12 @@ class SearchViewModel @Inject constructor(
 			}.onSuccess { books ->
 				updateState {
 					copy(
-						loadState = LoadState.SUCCESS,
+						uiState = UiState.SUCCESS,
 						books = books,
 					)
 				}
 			}.onFailure {
-				updateState {
-					copy(loadState = LoadState.ERROR)
-				}
+				updateState { copy(uiState = UiState.ERROR) }
 			}
 		}
 	}
@@ -81,11 +78,17 @@ class SearchViewModel @Inject constructor(
 		changeSearchKeyword("")
 	}
 
+	fun showHistory() {
+		updateState { copy(uiState = UiState.HISTORY) }
+	}
+
+	fun onHistoryClick(keyword: String) {
+		updateState { copy(searchKeyWord = keyword) }
+		searchKeyword()
+	}
+
 	fun onSortOptionChange(sortOption: KakaoBookSearchSortType) {
-		Log.d("로그", "SearchViewModel: onSortOptionChange() - sortOption : $sortOption")
-		updateState {
-			copy(sortType = sortOption)
-		}
+		updateState { copy(sortType = sortOption) }
 	}
 
 	private inline fun updateState(block: SearchViewState.() -> SearchViewState) {

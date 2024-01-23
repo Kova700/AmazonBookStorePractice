@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -34,13 +35,11 @@ import com.kova700.amazonbookstorepractice.R
 fun SearchBar(
 	searchKeyword: String,
 	onValueChange: (String) -> Unit,
+	onSearchBarClick: () -> Unit,
 	onSearchClick: () -> Unit,
 	onKeywordClear: () -> Unit,
 	onOptionClick: () -> Unit,
 ) {
-
-	//TODO : 아래에 검색기록도 추가
-
 	val keyboardController = LocalSoftwareKeyboardController.current
 
 	Card(
@@ -73,10 +72,14 @@ fun SearchBar(
 			}
 
 			TextField(
+				modifier = Modifier
+					.weight(1f)
+					.onFocusEvent { focusState ->
+						if (focusState.hasFocus) onSearchBarClick()
+					},
 				value = searchKeyword,
 				onValueChange = onValueChange,
 				placeholder = { Text("검색할 도서명을 입력해주세요.") },
-				modifier = Modifier.weight(1f),
 				singleLine = true,
 				colors = TextFieldDefaults.textFieldColors(
 					containerColor = Color.White,
@@ -89,7 +92,7 @@ fun SearchBar(
 						onSearchClick()
 						keyboardController?.hide()
 					}
-				)
+				),
 			)
 
 			if (searchKeyword.isNotBlank()) {
@@ -122,6 +125,7 @@ fun SearchBarPreview() {
 	SearchBar(
 		searchKeyword = "",
 		onValueChange = {},
+		onSearchBarClick = {},
 		onSearchClick = {},
 		onKeywordClear = {},
 		onOptionClick = {}

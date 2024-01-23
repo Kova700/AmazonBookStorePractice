@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchBar
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchHistory
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
@@ -43,6 +44,8 @@ fun SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
 		onValueChange = searchViewModel::changeSearchKeyword,
+		onSearchBarClick = searchViewModel::showHistory,
+		onHistoryClick = searchViewModel::onHistoryClick,
 		onSearchClick = searchViewModel::searchKeyword,
 		onLoadNextData = searchViewModel::loadNextData,
 		onKeywordClear = searchViewModel::onKeywordClear,
@@ -56,6 +59,8 @@ fun SearchScreen(
 	searchViewState: SearchViewState,
 	navigateToDetailScreen: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
+	onSearchBarClick: () -> Unit,
+	onHistoryClick: (String) -> Unit,
 	onSearchClick: () -> Unit,
 	onLoadNextData: () -> Unit,
 	onKeywordClear: () -> Unit,
@@ -66,7 +71,7 @@ fun SearchScreen(
 
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
-	if (searchViewState.loadState == LoadState.LOADING) {
+	if (searchViewState.uiState == UiState.LOADING) {
 		SearchResultLoading()
 	}
 
@@ -85,6 +90,7 @@ fun SearchScreen(
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
+			onSearchBarClick = onSearchBarClick,
 			onKeywordClear = onKeywordClear,
 			onSearchClick = {
 				onSearchClick()
@@ -95,8 +101,8 @@ fun SearchScreen(
 			onOptionClick = { searchOptionDialogState = true }
 		)
 
-		when (searchViewState.loadState) {
-			LoadState.ERROR -> {
+		when (searchViewState.uiState) {
+			UiState.ERROR -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),
 					verticalArrangement = Arrangement.Center,
@@ -110,7 +116,7 @@ fun SearchScreen(
 				}
 			}
 
-			LoadState.EMPTY -> {
+			UiState.EMPTY -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),
 					verticalArrangement = Arrangement.Center,
@@ -120,10 +126,17 @@ fun SearchScreen(
 				}
 			}
 
-			LoadState.LOADING,
-			LoadState.SUCCESS -> {
+			UiState.HISTORY -> {
+				SearchHistory(
+					historyList = persistentListOf("냠냠", "쩝쩝"),
+					onHistoryClick = onHistoryClick
+				)
+			}
+
+			UiState.LOADING,
+			UiState.SUCCESS -> {
 				LaunchedEffect(lazyGridState.canScrollForward.not()) {
-					if (lazyGridState.canScrollForward.not() && (searchViewState.loadState == LoadState.SUCCESS)) {
+					if (lazyGridState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
 						onLoadNextData()
 					}
 				}
@@ -178,6 +191,8 @@ fun SearchScreenPreview() {
 		),
 		navigateToDetailScreen = {},
 		onValueChange = {},
+		onSearchBarClick = {},
+		onHistoryClick = {},
 		onSearchClick = {},
 		onLoadNextData = {},
 		onKeywordClear = {},
