@@ -47,7 +47,7 @@ fun SearchScreen(
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
 		onSearchClick = searchViewModel::searchKeyword,
-		onLoadNextData = searchViewModel::loadNextData,
+		onLoadNextData = searchViewModel::loadNextSearchData,
 		onKeywordClear = searchViewModel::onKeywordClear,
 		onSortOptionChange = searchViewModel::onSortOptionChange,
 	)

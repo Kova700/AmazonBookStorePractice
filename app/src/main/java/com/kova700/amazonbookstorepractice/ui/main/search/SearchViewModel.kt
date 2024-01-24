@@ -55,7 +55,7 @@ class SearchViewModel @Inject constructor(
 		}
 	}
 
-	fun loadNextData() {
+	fun loadNextSearchData() {
 		updateState { copy(uiState = UiState.LOADING) }
 
 		viewModelScope.launch {
