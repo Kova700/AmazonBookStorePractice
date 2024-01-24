@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,14 +38,13 @@ fun SearchScreen(
 	searchViewModel: SearchViewModel = hiltViewModel(),
 	navigateToDetailScreen: (Int) -> Unit = {},
 ) {
-
 	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
 
 	SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
 		onValueChange = searchViewModel::changeSearchKeyword,
-		onSearchBarClick = searchViewModel::showHistory,
+		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
 		onSearchClick = searchViewModel::searchKeyword,
 		onLoadNextData = searchViewModel::loadNextData,
@@ -59,7 +59,7 @@ fun SearchScreen(
 	searchViewState: SearchViewState,
 	navigateToDetailScreen: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
-	onSearchBarClick: () -> Unit,
+	onTextFieldFocus: () -> Unit,
 	onHistoryClick: (String) -> Unit,
 	onSearchClick: () -> Unit,
 	onLoadNextData: () -> Unit,
@@ -68,6 +68,7 @@ fun SearchScreen(
 ) {
 	val scope = rememberCoroutineScope()
 	val lazyGridState = rememberLazyGridState()
+	val focusManager = LocalFocusManager.current
 
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
@@ -85,12 +86,13 @@ fun SearchScreen(
 
 	Column(
 		modifier = Modifier.fillMaxWidth()
+
 	) {
 
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
-			onSearchBarClick = onSearchBarClick,
+			onTextFieldFocus = onTextFieldFocus,
 			onKeywordClear = onKeywordClear,
 			onSearchClick = {
 				onSearchClick()
@@ -98,7 +100,8 @@ fun SearchScreen(
 					lazyGridState.scrollToItem(0)
 				}
 			},
-			onOptionClick = { searchOptionDialogState = true }
+			onOptionClick = { searchOptionDialogState = true },
+			focusManager = focusManager
 		)
 
 		when (searchViewState.uiState) {
@@ -129,7 +132,8 @@ fun SearchScreen(
 			UiState.HISTORY -> {
 				SearchHistory(
 					historyList = persistentListOf("냠냠", "쩝쩝"),
-					onHistoryClick = onHistoryClick
+					onHistoryClick = onHistoryClick,
+					focusManager = focusManager
 				)
 			}
 
@@ -191,7 +195,7 @@ fun SearchScreenPreview() {
 		),
 		navigateToDetailScreen = {},
 		onValueChange = {},
-		onSearchBarClick = {},
+		onTextFieldFocus = {},
 		onHistoryClick = {},
 		onSearchClick = {},
 		onLoadNextData = {},

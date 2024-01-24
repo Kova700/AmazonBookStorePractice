@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -30,8 +31,10 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun SearchHistory(
 	historyList: ImmutableList<String>,
-	onHistoryClick: (String) -> Unit
+	onHistoryClick: (String) -> Unit,
+	focusManager: FocusManager? = null
 ) {
+
 	Column {
 
 		Spacer(modifier = Modifier.height(10.dp))
@@ -68,7 +71,10 @@ fun SearchHistory(
 				) {
 
 					Text(
-						modifier = Modifier.clickable { onHistoryClick(historyString) },
+						modifier = Modifier.clickable {
+							onHistoryClick(historyString)
+							focusManager?.clearFocus()
+						},
 						text = historyString,
 						fontSize = 14.sp
 					)
