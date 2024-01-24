@@ -130,11 +130,13 @@ fun SearchScreen(
 			}
 
 			UiState.HISTORY -> {
-				SearchHistory(
-					historyList = persistentListOf("냠냠", "쩝쩝"),
-					onHistoryClick = onHistoryClick,
-					focusManager = focusManager
-				)
+				if (searchViewState.searchHistory.isNotEmpty()) {
+					SearchHistory(
+						historyList = searchViewState.searchHistory,
+						onHistoryClick = onHistoryClick,
+						focusManager = focusManager
+					)
+				}
 			}
 
 			UiState.LOADING,
