@@ -46,6 +46,7 @@ fun SearchScreen(
 		onValueChange = searchViewModel::changeSearchKeyword,
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
+		onHistoryRemoveClick = searchViewModel::onHistoryRemoveClick,
 		onSearchClick = searchViewModel::searchKeyword,
 		onLoadNextData = searchViewModel::loadNextSearchData,
 		onKeywordClear = searchViewModel::onKeywordClear,
@@ -61,6 +62,7 @@ fun SearchScreen(
 	onValueChange: (String) -> Unit,
 	onTextFieldFocus: () -> Unit,
 	onHistoryClick: (String) -> Unit,
+	onHistoryRemoveClick: (Int) -> Unit,
 	onSearchClick: () -> Unit,
 	onLoadNextData: () -> Unit,
 	onKeywordClear: () -> Unit,
@@ -134,6 +136,7 @@ fun SearchScreen(
 					SearchHistory(
 						historyList = searchViewState.searchHistory,
 						onHistoryClick = onHistoryClick,
+						onHistoryRemoveClick = onHistoryRemoveClick,
 						focusManager = focusManager
 					)
 				}
@@ -199,6 +202,7 @@ fun SearchScreenPreview() {
 		onValueChange = {},
 		onTextFieldFocus = {},
 		onHistoryClick = {},
+		onHistoryRemoveClick = {},
 		onSearchClick = {},
 		onLoadNextData = {},
 		onKeywordClear = {},

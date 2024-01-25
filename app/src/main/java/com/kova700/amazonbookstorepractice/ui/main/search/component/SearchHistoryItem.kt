@@ -24,6 +24,7 @@ import com.kova700.amazonbookstorepractice.R
 fun SearchHistoryItem(
 	historyString: String,
 	onHistoryClick: (String) -> Unit,
+	onHistoryRemoveClick: () -> Unit,
 	focusManager: FocusManager? = null
 ) {
 	Row(
@@ -38,16 +39,14 @@ fun SearchHistoryItem(
 			modifier = Modifier
 				.weight(1F)
 				.clickable {
-				onHistoryClick(historyString)
-				focusManager?.clearFocus()
-			},
+					onHistoryClick(historyString)
+					focusManager?.clearFocus()
+				},
 			text = historyString,
 			fontSize = 14.sp
 		)
 
-		IconButton(
-			onClick = {} //삭제 API
-		) {
+		IconButton(onClick = onHistoryRemoveClick) {
 			Icon(
 				imageVector = ImageVector.vectorResource(id = R.drawable.ic_delete),
 				contentDescription = null,
@@ -63,5 +62,6 @@ fun SearchHistoryItemPreview() {
 	SearchHistoryItem(
 		historyString = "테스트 아이템 1",
 		onHistoryClick = {},
+		onHistoryRemoveClick = {},
 	)
 }

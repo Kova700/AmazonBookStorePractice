@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun SearchHistory(
 	historyList: ImmutableList<String>,
 	onHistoryClick: (String) -> Unit,
+	onHistoryRemoveClick: (Int) -> Unit,
 	focusManager: FocusManager? = null
 ) {
 	Column {
@@ -53,11 +54,15 @@ fun SearchHistory(
 		Spacer(modifier = Modifier.height(10.dp))
 
 		LazyColumn {
-			items(historyList) { historyString ->
+			itemsIndexed(
+				items = historyList,
+//				key = { _, item -> item },
+			) { index, historyString ->
 
 				SearchHistoryItem(
 					historyString = historyString,
 					onHistoryClick = onHistoryClick,
+					onHistoryRemoveClick = { onHistoryRemoveClick(index) },
 					focusManager = focusManager
 				)
 
@@ -71,6 +76,7 @@ fun SearchHistory(
 fun SearchHistoryPreview() {
 	SearchHistory(
 		historyList = persistentListOf("이것이123124", "검색기록", "테스트123"),
-		onHistoryClick = {}
+		onHistoryClick = {},
+		onHistoryRemoveClick = {}
 	)
 }
