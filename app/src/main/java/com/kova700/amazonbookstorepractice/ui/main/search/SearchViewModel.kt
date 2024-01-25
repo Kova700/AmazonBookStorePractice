@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.AddSearchHistoryUseCase
+import com.kova700.amazonbookstorepractice.domain.usecase.ClearSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetPagingSearchBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
@@ -22,7 +23,8 @@ class SearchViewModel @Inject constructor(
 	private val getPagingSearchBookUseCase: GetPagingSearchBookUseCase,
 	private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
 	private val addSearchHistoryUseCase: AddSearchHistoryUseCase,
-	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase
+	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase,
+	private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
@@ -118,6 +120,11 @@ class SearchViewModel @Inject constructor(
 
 	fun onHistoryRemoveClick(index: Int) = viewModelScope.launch {
 		removeSearchHistoryUseCase(index)
+		loadSearchHistory()
+	}
+
+	fun onHistoryClearClick() = viewModelScope.launch {
+		clearSearchHistoryUseCase()
 		loadSearchHistory()
 	}
 

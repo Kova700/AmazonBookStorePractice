@@ -1,5 +1,6 @@
 package com.kova700.amazonbookstorepractice.ui.main.search.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ fun SearchHistory(
 	historyList: ImmutableList<String>,
 	onHistoryClick: (String) -> Unit,
 	onHistoryRemoveClick: (Int) -> Unit,
+	onHistoryClearClick: () -> Unit,
 	focusManager: FocusManager? = null
 ) {
 	Column {
@@ -47,11 +49,12 @@ fun SearchHistory(
 			Text(
 				text = "전체삭제",
 				fontSize = 12.sp,
-				fontWeight = FontWeight.Bold
+				fontWeight = FontWeight.Bold,
+				modifier = Modifier
+					.clickable { onHistoryClearClick() }
+					.padding(5.dp)
 			)
 		}
-
-		Spacer(modifier = Modifier.height(10.dp))
 
 		LazyColumn {
 			itemsIndexed(
@@ -77,6 +80,7 @@ fun SearchHistoryPreview() {
 	SearchHistory(
 		historyList = persistentListOf("이것이123124", "검색기록", "테스트123"),
 		onHistoryClick = {},
-		onHistoryRemoveClick = {}
+		onHistoryRemoveClick = {},
+		onHistoryClearClick = {},
 	)
 }
