@@ -18,7 +18,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,12 +30,11 @@ import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
 	searchViewModel: SearchViewModel = hiltViewModel(),
-	navigateToDetailScreen: (Int) -> Unit = {},
+	navigateToDetailScreen: (Int) -> Unit,
 ) {
 	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
 
@@ -72,7 +70,6 @@ fun SearchScreen(
 ) {
 	val scope = rememberCoroutineScope()
 	val lazyGridState = rememberLazyGridState()
-	val focusManager = LocalFocusManager.current
 
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
@@ -92,20 +89,22 @@ fun SearchScreen(
 		modifier = Modifier.fillMaxWidth()
 
 	) {
+		val rememberedOnSearchClick = remember { onSearchClick }
 
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
 			onTextFieldFocus = onTextFieldFocus,
 			onKeywordClear = onKeywordClear,
-			onSearchClick = {
-				onSearchClick()
-				scope.launch {
-					lazyGridState.scrollToItem(0)
-				}
-			},
-			onOptionClick = { searchOptionDialogState = true },
-			focusManager = focusManager
+			onSearchClick = rememberedOnSearchClick
+//			onSearchClick = {
+//				onSearchClick()
+//				scope.launch {
+//					lazyGridState.scrollToItem(0)
+//				}
+//			},
+			,
+			onOptionClick = { searchOptionDialogState = true }
 		)
 
 		when (searchViewState.uiState) {
@@ -135,12 +134,16 @@ fun SearchScreen(
 
 			UiState.HISTORY -> {
 				if (searchViewState.searchHistory.isNotEmpty()) {
+
+					val rememberedOnHistoryClick = remember { onHistoryClick }
+					val rememberedOnHistoryRemoveClick = remember { onHistoryRemoveClick }
+					val rememberedOnHistoryClearClick = remember { onHistoryClearClick }
+
 					SearchHistory(
 						historyList = searchViewState.searchHistory,
-						onHistoryClick = onHistoryClick,
-						onHistoryRemoveClick = onHistoryRemoveClick,
-						onHistoryClearClick = onHistoryClearClick,
-						focusManager = focusManager
+						onHistoryClick = rememberedOnHistoryClick,
+						onHistoryRemoveClick = rememberedOnHistoryRemoveClick,
+						onHistoryClearClick = rememberedOnHistoryClearClick,
 					)
 				}
 			}
