@@ -14,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +67,6 @@ fun SearchScreen(
 	onKeywordClear: () -> Unit,
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 ) {
-	val scope = rememberCoroutineScope()
 	val lazyGridState = rememberLazyGridState()
 
 	var searchOptionDialogState by remember { mutableStateOf(false) }
@@ -87,7 +85,6 @@ fun SearchScreen(
 
 	Column(
 		modifier = Modifier.fillMaxWidth()
-
 	) {
 		val rememberedOnSearchClick = remember { onSearchClick }
 
@@ -96,14 +93,7 @@ fun SearchScreen(
 			onValueChange = onValueChange,
 			onTextFieldFocus = onTextFieldFocus,
 			onKeywordClear = onKeywordClear,
-			onSearchClick = rememberedOnSearchClick
-//			onSearchClick = {
-//				onSearchClick()
-//				scope.launch {
-//					lazyGridState.scrollToItem(0)
-//				}
-//			},
-			,
+			onSearchClick = rememberedOnSearchClick,
 			onOptionClick = { searchOptionDialogState = true }
 		)
 

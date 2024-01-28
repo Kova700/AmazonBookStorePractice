@@ -20,10 +20,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,8 +38,8 @@ fun SearchBar(
 	onSearchClick: () -> Unit,
 	onKeywordClear: () -> Unit,
 	onOptionClick: () -> Unit,
-	focusManager: FocusManager? = null
 ) {
+	val focusManager = LocalFocusManager.current
 
 	Card(
 		modifier = Modifier
@@ -64,7 +64,7 @@ fun SearchBar(
 
 			IconButton(onClick = {
 				onSearchClick()
-				focusManager?.clearFocus()
+				focusManager.clearFocus()
 			}) {
 				Icon(
 					imageVector = ImageVector.vectorResource(id = R.drawable.ic_searcn_image_search),
@@ -73,6 +73,7 @@ fun SearchBar(
 				)
 			}
 
+			//다른 곳 터치시 포커스 제거 추가
 			TextField(
 				modifier = Modifier
 					.weight(1f)
@@ -92,7 +93,7 @@ fun SearchBar(
 				keyboardActions = KeyboardActions(
 					onDone = {
 						onSearchClick()
-						focusManager?.clearFocus()
+						focusManager.clearFocus()
 					}
 				),
 			)
