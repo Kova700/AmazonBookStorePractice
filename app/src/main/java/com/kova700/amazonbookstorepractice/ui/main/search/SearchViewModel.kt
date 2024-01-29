@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -132,8 +133,9 @@ class SearchViewModel @Inject constructor(
 		updateState { copy(sortType = sortOption) }
 	}
 
-	//수정 예정
 	private inline fun updateState(block: SearchViewState.() -> SearchViewState) {
-		_viewState.value = _viewState.value.block()
+		_viewState.update {
+			_viewState.value.block()
+		}
 	}
 }
