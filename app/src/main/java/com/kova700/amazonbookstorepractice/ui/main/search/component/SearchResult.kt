@@ -39,7 +39,7 @@ fun SearchResult(
 				price = item.price,
 				modifier = Modifier
 					.fillMaxWidth()
-					.border(1.dp, Color.Gray)
+					.border(1.dp, Color(0xFFEEEEEE))
 					.clickable { onItemClick(index) }
 					.padding(15.dp)
 			)
