@@ -33,15 +33,17 @@ class BookSearchRepositoryImpl @Inject constructor(
 		)
 
 		if (query != cachedSearchKeyword || sort != cachedSortType) {
-			cachedBooks.clear()
+			clearCachedData(
+				query = query,
+				sort = sort
+			)
 		}
 
 		cachedBooks.addAll(response.books
 			.filter { it.thumbnail.isNotBlank() }
 			.map { it.copy(url = it.url.toMobileUrl()) }
 			.toDomain())
-		cachedSearchKeyword = query
-		cachedSortType = sort
+
 		isEndPage = response.meta.isEnd
 		cachedPage++
 
@@ -68,6 +70,17 @@ class BookSearchRepositoryImpl @Inject constructor(
 			oldValue = "https://",
 			newValue = "https://m."
 		)
+	}
+
+	private fun clearCachedData(
+		query: String,
+		sort: KakaoBookSearchSortType
+	) {
+		cachedBooks.clear()
+		cachedPage = FIRST_PAGE
+		cachedSearchKeyword = query
+		cachedSortType = sort
+		isEndPage = false
 	}
 
 }
