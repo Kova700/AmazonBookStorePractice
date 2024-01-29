@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 
 @Composable
 fun SearchResultItem(
@@ -36,15 +37,15 @@ fun SearchResultItem(
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 
-			//TODO :ProgressBar PlaceHolder 추가해야함
-			AsyncImage(
+			SubcomposeAsyncImage(
 				model = thumbnail,
 				contentDescription = "bookThumbnail",
 				modifier = Modifier
 					.width(90.dp)
 					.height(130.dp)
 					.clip(RoundedCornerShape(6.dp)),
-				contentScale = ContentScale.Fit
+				contentScale = ContentScale.Fit,
+				loading = { CircularProgressIndicator() },
 			)
 
 			Spacer(modifier = Modifier.height(15.dp))
