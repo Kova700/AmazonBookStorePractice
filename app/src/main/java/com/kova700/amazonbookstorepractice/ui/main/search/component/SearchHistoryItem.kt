@@ -30,18 +30,18 @@ fun SearchHistoryItem(
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(horizontal = 20.dp),
+			.padding(horizontal = 20.dp)
+			.clickable {
+				onHistoryClick(historyString)
+				focusManager?.clearFocus()
+			},
 		horizontalArrangement = Arrangement.Absolute.SpaceBetween,
 		verticalAlignment = Alignment.CenterVertically,
 	) {
 
 		Text(
 			modifier = Modifier
-				.weight(1F)
-				.clickable {
-					onHistoryClick(historyString)
-					focusManager?.clearFocus()
-				},
+				.weight(1F),
 			text = historyString,
 			fontSize = 14.sp
 		)
