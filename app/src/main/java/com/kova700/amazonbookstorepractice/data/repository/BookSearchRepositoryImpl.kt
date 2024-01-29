@@ -21,11 +21,14 @@ class BookSearchRepositoryImpl @Inject constructor(
 	private var cachedPage = FIRST_PAGE
 	private var isEndPage = false
 
-	//TODO: 검색된 상태에서 검색 버튼 누르면 같은 검색어로 계속 검색되는 현상 막기
-
 	override suspend fun loadSearchData(
 		query: String, sort: KakaoBookSearchSortType, page: Int, size: Int
 	): List<Book> {
+
+		if (query == cachedSearchKeyword &&
+			sort == cachedSortType &&
+			page < cachedPage
+		) return cachedBooks
 
 		val response = bookSearchService.searchBooks(
 			query = query, page = page,
