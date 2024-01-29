@@ -31,5 +31,3 @@ data class NetworkBook(
 	@SerialName("url") val url: String,
 	@SerialName("sale_price") val salePrice: Int
 )
-
-//TODO : search.daum => m.search.daum으로 수정해주는 로직 필요

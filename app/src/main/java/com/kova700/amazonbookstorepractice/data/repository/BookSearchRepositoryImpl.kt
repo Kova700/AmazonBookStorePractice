@@ -36,7 +36,10 @@ class BookSearchRepositoryImpl @Inject constructor(
 			cachedBooks.clear()
 		}
 
-		cachedBooks.addAll(response.books.filter { it.thumbnail.isNotBlank() }.toDomain())
+		cachedBooks.addAll(response.books
+			.filter { it.thumbnail.isNotBlank() }
+			.map { it.copy(url = it.url.toMobileUrl()) }
+			.toDomain())
 		cachedSearchKeyword = query
 		cachedSortType = sort
 		isEndPage = response.meta.isEnd
@@ -58,6 +61,13 @@ class BookSearchRepositoryImpl @Inject constructor(
 	//인덱스에 없는경우 예외 처리 해야함
 	override fun getBook(index: Int): Book {
 		return cachedBooks[index]
+	}
+
+	private fun String.toMobileUrl(): String {
+		return this.replace(
+			oldValue = "https://",
+			newValue = "https://m."
+		)
 	}
 
 }
