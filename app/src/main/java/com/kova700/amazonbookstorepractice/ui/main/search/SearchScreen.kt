@@ -1,5 +1,7 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -68,7 +71,7 @@ fun SearchScreen(
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 ) {
 	val lazyGridState = rememberLazyGridState()
-
+	val focusManager = LocalFocusManager.current
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
 	if (searchViewState.uiState == UiState.LOADING) {
@@ -84,7 +87,13 @@ fun SearchScreen(
 	}
 
 	Column(
-		modifier = Modifier.fillMaxWidth()
+		modifier = Modifier
+			.fillMaxSize()
+			.clickable(
+				interactionSource = remember { MutableInteractionSource() },
+				indication = null,
+				onClick = { focusManager.clearFocus() }
+			)
 	) {
 		val rememberedOnSearchClick = remember { onSearchClick }
 
