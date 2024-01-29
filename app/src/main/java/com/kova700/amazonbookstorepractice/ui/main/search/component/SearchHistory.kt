@@ -35,29 +35,32 @@ fun SearchHistory(
 
 		Spacer(modifier = Modifier.height(10.dp))
 
-		Row(
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(horizontal = 20.dp),
-			horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-			verticalAlignment = Alignment.CenterVertically,
-		) {
-			Text(
-				text = "최근 검색어",
-				fontSize = 12.sp,
-				fontWeight = FontWeight.Bold
-			)
-			Text(
-				text = "전체삭제",
-				fontSize = 12.sp,
-				fontWeight = FontWeight.Bold,
-				modifier = Modifier
-					.clickable { onHistoryClearClick() }
-					.padding(5.dp)
-			)
-		}
-
 		LazyColumn {
+			item {
+
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(horizontal = 20.dp),
+					horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+					verticalAlignment = Alignment.CenterVertically,
+				) {
+					Text(
+						text = "최근 검색어",
+						fontSize = 12.sp,
+						fontWeight = FontWeight.Bold
+					)
+					Text(
+						text = "전체삭제",
+						fontSize = 12.sp,
+						fontWeight = FontWeight.Bold,
+						modifier = Modifier
+							.clickable { onHistoryClearClick() }
+							.padding(5.dp)
+					)
+				}
+			}
+
 			itemsIndexed(
 				items = historyList,
 //				key = { _, item -> item },
