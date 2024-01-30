@@ -65,6 +65,7 @@ fun SearchResult(
 					val itemIndex = rowIndex * columnCount + i
 
 					if (itemIndex < books.size) {
+						//TODO : 펼쳐진 상태에서 다른 아이템 눌리면 접히는게 아니라 다른 아이템으로 변경되게 수정
 						SearchResultItem(
 							title = books[itemIndex].title,
 							thumbnail = books[itemIndex].thumbnail,
