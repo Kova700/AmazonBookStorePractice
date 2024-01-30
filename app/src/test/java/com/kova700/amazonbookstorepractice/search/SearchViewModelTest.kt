@@ -14,7 +14,6 @@ import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
 import com.kova700.amazonbookstorepractice.ui.main.search.UiState
 import kotlinx.coroutines.test.runTest
-import okhttp3.internal.toImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
