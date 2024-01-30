@@ -14,6 +14,7 @@ import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
 import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
 import com.kova700.amazonbookstorepractice.ui.main.search.UiState
 import kotlinx.coroutines.test.runTest
+import okhttp3.internal.toImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -113,15 +114,8 @@ class SearchViewModelTest {
 	}
 
 	@Test
-	fun `검색 시, Uistate가 LoadState_LOADING으로 바뀐다`() = runTest {
+	fun `검색 시, Uistate가 UiState_LOADING으로 바뀐다`() = runTest {
 		val nonEmptySearchKeyword = "자바"
-
-		whenever(
-			getSearchedBookUseCase.invoke(
-				query = nonEmptySearchKeyword,
-				sort = KakaoBookSearchSortType.ACCURACY
-			)
-		).thenReturn(mockSearchResponse)
 
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword(isLoadingTest = true)
@@ -130,7 +124,7 @@ class SearchViewModelTest {
 	}
 
 	@Test
-	fun `검색 실패 시 Uistate가 LoadState_ERROR으로 바뀐다`() = runTest {
+	fun `검색 실패 시 Uistate가 UiState_ERROR으로 바뀐다`() = runTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
@@ -183,5 +177,40 @@ class SearchViewModelTest {
 		verify(getSearchHistoryUseCase).invoke()
 	}
 
-	//다음 페이지 로드 Test
+	@Test
+	fun `다음 페이지 로드`() = runTest {
+		val pagingResponse =
+			mockSearchResponse + mockSearchResponse.map { it.copy(title = "${it.title} 2") }
+
+		whenever(
+			getPagingSearchBookUseCase.invoke()
+		).thenReturn(pagingResponse)
+
+		searchViewModel.loadNextSearchData()
+		verify(getPagingSearchBookUseCase).invoke()
+
+		assertEquals(
+			SearchViewState.Default.copy(
+				books = pagingResponse.toItemList(),
+				uiState = UiState.SUCCESS
+			), searchViewModel.viewState.value
+		)
+	}
+
+	@Test
+	fun `다음 페이지 로드 시, Uistate가 UiState_LOADING으로 바뀐다`() = runTest {
+		searchViewModel.loadNextSearchData(isLoadingTest = true)
+		assertEquals(UiState.LOADING, searchViewModel.viewState.value.uiState)
+	}
+
+	@Test
+	fun `다음 페이지 로드 실패 시, Uistate가 UiState_ERROR로 바뀐다`() = runTest {
+		whenever(
+			getPagingSearchBookUseCase.invoke()
+		).thenThrow(RuntimeException("Search API is Failed"))
+
+		searchViewModel.loadNextSearchData()
+		assertEquals(UiState.ERROR, searchViewModel.viewState.value.uiState)
+	}
+
 }

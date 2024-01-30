@@ -72,8 +72,9 @@ class SearchViewModel @Inject constructor(
 		}
 	}
 
-	fun loadNextSearchData() {
+	fun loadNextSearchData(isLoadingTest :Boolean = false) {
 		updateState { copy(uiState = UiState.LOADING) }
+		if (isLoadingTest) return
 
 		viewModelScope.launch {
 			runCatching {
