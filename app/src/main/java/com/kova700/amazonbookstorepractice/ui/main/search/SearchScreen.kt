@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -72,7 +71,7 @@ fun SearchScreen(
 	onKeywordClear: () -> Unit,
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 ) {
-	val lazyGridState = rememberLazyGridState()
+	val lazyListState = rememberLazyListState()
 	val focusManager = LocalFocusManager.current
 	val scope = rememberCoroutineScope()
 	var searchOptionDialogState by remember { mutableStateOf(false) }
@@ -107,7 +106,7 @@ fun SearchScreen(
 			onSearchClick = {
 				onSearchClick()
 				scope.launch {
-					lazyGridState.scrollToItem(0)
+					lazyListState.scrollToItem(0)
 				}
 			},
 			onOptionClick = { searchOptionDialogState = true }
@@ -156,15 +155,14 @@ fun SearchScreen(
 
 			UiState.LOADING,
 			UiState.SUCCESS -> {
-				LaunchedEffect(lazyGridState.canScrollForward.not()) {
-					if (lazyGridState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
+				LaunchedEffect(lazyListState.canScrollForward.not()) {
+					if (lazyListState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
 						onLoadNextData()
 					}
 				}
 
 				SearchResult(
-					lazyGridState = lazyGridState,
-					modifier = Modifier.fillMaxWidth(),
+					lazyListState = lazyListState,
 					books = searchViewState.books,
 					onItemClick = navigateToDetailScreen,
 				)

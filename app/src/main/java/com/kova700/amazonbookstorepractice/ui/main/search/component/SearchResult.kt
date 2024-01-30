@@ -2,12 +2,15 @@ package com.kova700.amazonbookstorepractice.ui.main.search.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,32 +20,44 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun SearchResult(
-	lazyGridState: LazyGridState,
-	modifier: Modifier = Modifier,
+	lazyListState: LazyListState,
 	onItemClick: (Int) -> Unit,
 	books: ImmutableList<BookItem>,
 ) {
-	LazyVerticalGrid(
-		columns = GridCells.Fixed(2),
-		modifier = modifier,
-		state = lazyGridState
+	val columnCount = 2
+
+	LazyColumn(
+		modifier = Modifier.fillMaxSize(),
+		state = lazyListState
 	) {
-		itemsIndexed(
-			items = books,
-			key = { _, item ->
-				item.isbn + item.hashCode()
-			},
-		) { index, item ->
-			SearchResultItem(
-				title = item.title,
-				thumbnail = item.thumbnail,
-				price = item.price,
-				modifier = Modifier
-					.fillMaxWidth()
-					.border(1.dp, Color(0xFFEEEEEE))
-					.clickable { onItemClick(index) }
-					.padding(15.dp)
-			)
+		items(
+			count = (books.size + 1) / columnCount,
+			key = { index -> books[index].isbn + books[index].hashCode() }
+		) { rowIndex ->
+
+			Row(modifier = Modifier.height(IntrinsicSize.Max)) {
+				for (i in 0 until columnCount) {
+					val itemIndex = rowIndex * columnCount + i
+
+					if (itemIndex < books.size) {
+						SearchResultItem(
+							title = books[itemIndex].title,
+							thumbnail = books[itemIndex].thumbnail,
+							price = books[itemIndex].price,
+							modifier = Modifier
+								.fillMaxHeight()
+								.weight(1f)
+								.border(1.dp, Color(0xFFEEEEEE))
+								.clickable { onItemClick(itemIndex) }
+								.padding(15.dp)
+						)
+					} else {
+						Spacer(Modifier.weight(1f))
+					}
+				}
+
+			}
+
 		}
 	}
 }
