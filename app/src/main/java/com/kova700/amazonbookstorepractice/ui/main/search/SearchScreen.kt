@@ -1,5 +1,7 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +16,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,26 +27,29 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchBar
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchHistory
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
 	searchViewModel: SearchViewModel = hiltViewModel(),
-	navigateToDetailScreen: (Int) -> Unit = {},
+	navigateToDetailScreen: (Int) -> Unit,
 ) {
-
 	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
 
 	SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
 		onValueChange = searchViewModel::changeSearchKeyword,
+		onTextFieldFocus = searchViewModel::showHistory,
+		onHistoryClick = searchViewModel::onHistoryClick,
+		onHistoryRemoveClick = searchViewModel::onHistoryRemoveClick,
+		onHistoryClearClick = searchViewModel::onHistoryClearClick,
 		onSearchClick = searchViewModel::searchKeyword,
-		onLoadNextData = searchViewModel::loadNextData,
+		onLoadNextData = searchViewModel::loadNextSearchData,
 		onKeywordClear = searchViewModel::onKeywordClear,
 		onSortOptionChange = searchViewModel::onSortOptionChange,
 	)
@@ -56,17 +61,20 @@ fun SearchScreen(
 	searchViewState: SearchViewState,
 	navigateToDetailScreen: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
+	onTextFieldFocus: () -> Unit,
+	onHistoryClick: (String) -> Unit,
+	onHistoryRemoveClick: (Int) -> Unit,
+	onHistoryClearClick: () -> Unit,
 	onSearchClick: () -> Unit,
 	onLoadNextData: () -> Unit,
 	onKeywordClear: () -> Unit,
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 ) {
-	val scope = rememberCoroutineScope()
 	val lazyGridState = rememberLazyGridState()
-
+	val focusManager = LocalFocusManager.current
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
-	if (searchViewState.loadState == LoadState.LOADING) {
+	if (searchViewState.uiState == UiState.LOADING) {
 		SearchResultLoading()
 	}
 
@@ -79,24 +87,27 @@ fun SearchScreen(
 	}
 
 	Column(
-		modifier = Modifier.fillMaxWidth()
+		modifier = Modifier
+			.fillMaxSize()
+			.clickable(
+				interactionSource = remember { MutableInteractionSource() },
+				indication = null,
+				onClick = { focusManager.clearFocus() }
+			)
 	) {
+		val rememberedOnSearchClick = remember { onSearchClick }
 
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
+			onTextFieldFocus = onTextFieldFocus,
 			onKeywordClear = onKeywordClear,
-			onSearchClick = {
-				onSearchClick()
-				scope.launch {
-					lazyGridState.scrollToItem(0)
-				}
-			},
+			onSearchClick = rememberedOnSearchClick,
 			onOptionClick = { searchOptionDialogState = true }
 		)
 
-		when (searchViewState.loadState) {
-			LoadState.ERROR -> {
+		when (searchViewState.uiState) {
+			UiState.ERROR -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),
 					verticalArrangement = Arrangement.Center,
@@ -110,7 +121,7 @@ fun SearchScreen(
 				}
 			}
 
-			LoadState.EMPTY -> {
+			UiState.EMPTY -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),
 					verticalArrangement = Arrangement.Center,
@@ -120,10 +131,26 @@ fun SearchScreen(
 				}
 			}
 
-			LoadState.LOADING,
-			LoadState.SUCCESS -> {
+			UiState.HISTORY -> {
+				if (searchViewState.searchHistory.isNotEmpty()) {
+
+					val rememberedOnHistoryClick = remember { onHistoryClick }
+					val rememberedOnHistoryRemoveClick = remember { onHistoryRemoveClick }
+					val rememberedOnHistoryClearClick = remember { onHistoryClearClick }
+
+					SearchHistory(
+						historyList = searchViewState.searchHistory,
+						onHistoryClick = rememberedOnHistoryClick,
+						onHistoryRemoveClick = rememberedOnHistoryRemoveClick,
+						onHistoryClearClick = rememberedOnHistoryClearClick,
+					)
+				}
+			}
+
+			UiState.LOADING,
+			UiState.SUCCESS -> {
 				LaunchedEffect(lazyGridState.canScrollForward.not()) {
-					if (lazyGridState.canScrollForward.not() && (searchViewState.loadState == LoadState.SUCCESS)) {
+					if (lazyGridState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
 						onLoadNextData()
 					}
 				}
@@ -178,6 +205,10 @@ fun SearchScreenPreview() {
 		),
 		navigateToDetailScreen = {},
 		onValueChange = {},
+		onTextFieldFocus = {},
+		onHistoryClick = {},
+		onHistoryRemoveClick = {},
+		onHistoryClearClick = {},
 		onSearchClick = {},
 		onLoadNextData = {},
 		onKeywordClear = {},

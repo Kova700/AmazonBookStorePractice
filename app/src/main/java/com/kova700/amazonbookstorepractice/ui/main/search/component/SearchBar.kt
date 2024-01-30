@@ -19,29 +19,27 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kova700.amazonbookstorepractice.R
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
 	searchKeyword: String,
 	onValueChange: (String) -> Unit,
+	onTextFieldFocus: () -> Unit,
 	onSearchClick: () -> Unit,
 	onKeywordClear: () -> Unit,
 	onOptionClick: () -> Unit,
 ) {
-
-	//TODO : 아래에 검색기록도 추가
-
-	val keyboardController = LocalSoftwareKeyboardController.current
+	val focusManager = LocalFocusManager.current
 
 	Card(
 		modifier = Modifier
@@ -64,7 +62,10 @@ fun SearchBar(
 		) {
 			Spacer(modifier = Modifier.width(10.dp))
 
-			IconButton(onClick = onSearchClick) {
+			IconButton(onClick = {
+				onSearchClick()
+				focusManager.clearFocus()
+			}) {
 				Icon(
 					imageVector = ImageVector.vectorResource(id = R.drawable.ic_searcn_image_search),
 					contentDescription = null,
@@ -72,11 +73,16 @@ fun SearchBar(
 				)
 			}
 
+			//다른 곳 터치시 포커스 제거 추가
 			TextField(
+				modifier = Modifier
+					.weight(1f)
+					.onFocusEvent { focusState ->
+						if (focusState.hasFocus) onTextFieldFocus()
+					},
 				value = searchKeyword,
 				onValueChange = onValueChange,
 				placeholder = { Text("검색할 도서명을 입력해주세요.") },
-				modifier = Modifier.weight(1f),
 				singleLine = true,
 				colors = TextFieldDefaults.textFieldColors(
 					containerColor = Color.White,
@@ -87,13 +93,16 @@ fun SearchBar(
 				keyboardActions = KeyboardActions(
 					onDone = {
 						onSearchClick()
-						keyboardController?.hide()
+						focusManager.clearFocus()
 					}
-				)
+				),
 			)
 
 			if (searchKeyword.isNotBlank()) {
-				IconButton(onClick = onKeywordClear) {
+				IconButton(onClick = {
+					onKeywordClear()
+					onTextFieldFocus()
+				}) {
 					Icon(
 						imageVector = ImageVector.vectorResource(id = R.drawable.ic_text_delete_image_search),
 						contentDescription = null,
@@ -122,6 +131,7 @@ fun SearchBarPreview() {
 	SearchBar(
 		searchKeyword = "",
 		onValueChange = {},
+		onTextFieldFocus = {},
 		onSearchClick = {},
 		onKeywordClear = {},
 		onOptionClick = {}
