@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kova700.amazonbookstorepractice.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +74,6 @@ fun SearchBar(
 				)
 			}
 
-			//다른 곳 터치시 포커스 제거 추가
 			TextField(
 				modifier = Modifier
 					.weight(1f)
@@ -82,7 +82,12 @@ fun SearchBar(
 					},
 				value = searchKeyword,
 				onValueChange = onValueChange,
-				placeholder = { Text("검색할 도서명을 입력해주세요.") },
+				placeholder = {
+					Text(
+						text = "검색할 도서명을 입력해주세요.",
+						fontSize = 14.sp
+					)
+				},
 				singleLine = true,
 				colors = TextFieldDefaults.textFieldColors(
 					containerColor = Color.White,

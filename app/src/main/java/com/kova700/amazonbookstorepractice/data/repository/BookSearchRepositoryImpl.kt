@@ -21,11 +21,14 @@ class BookSearchRepositoryImpl @Inject constructor(
 	private var cachedPage = FIRST_PAGE
 	private var isEndPage = false
 
-	//TODO: 검색된 상태에서 검색 버튼 누르면 같은 검색어로 계속 검색되는 현상 막기
-
 	override suspend fun loadSearchData(
 		query: String, sort: KakaoBookSearchSortType, page: Int, size: Int
 	): List<Book> {
+
+		if (query == cachedSearchKeyword &&
+			sort == cachedSortType &&
+			page < cachedPage
+		) return cachedBooks
 
 		val response = bookSearchService.searchBooks(
 			query = query, page = page,
@@ -33,12 +36,17 @@ class BookSearchRepositoryImpl @Inject constructor(
 		)
 
 		if (query != cachedSearchKeyword || sort != cachedSortType) {
-			cachedBooks.clear()
+			clearCachedData(
+				query = query,
+				sort = sort
+			)
 		}
 
-		cachedBooks.addAll(response.books.filter { it.thumbnail.isNotBlank() }.toDomain())
-		cachedSearchKeyword = query
-		cachedSortType = sort
+		cachedBooks.addAll(response.books
+			.filter { it.thumbnail.isNotBlank() }
+			.map { it.copy(url = it.url.toMobileUrl()) }
+			.toDomain())
+
 		isEndPage = response.meta.isEnd
 		cachedPage++
 
@@ -58,6 +66,24 @@ class BookSearchRepositoryImpl @Inject constructor(
 	//인덱스에 없는경우 예외 처리 해야함
 	override fun getBook(index: Int): Book {
 		return cachedBooks[index]
+	}
+
+	private fun String.toMobileUrl(): String {
+		return this.replace(
+			oldValue = "https://",
+			newValue = "https://m."
+		)
+	}
+
+	private fun clearCachedData(
+		query: String,
+		sort: KakaoBookSearchSortType
+	) {
+		cachedBooks.clear()
+		cachedPage = FIRST_PAGE
+		cachedSearchKeyword = query
+		cachedSortType = sort
+		isEndPage = false
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.kova700.amazonbookstorepractice.ui.main
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,11 +12,10 @@ import com.kova700.amazonbookstorepractice.ui.main.search.SearchScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-
 @Composable
-fun MainScreen(
-	navController: NavHostController = rememberNavController(),
-) {
+fun MainScreen() {
+	val navController = rememberNavController()
+
 	NavHost(navController = navController, startDestination = ScreenRoute.SEARCH.route) {
 
 		composable(

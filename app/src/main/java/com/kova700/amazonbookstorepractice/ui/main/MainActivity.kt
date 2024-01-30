@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.kova700.amazonbookstorepractice.ui.theme.AmazonBookStorePracticeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,9 +15,7 @@ class MainActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 		setContent {
 			AmazonBookStorePracticeTheme {
-				MainScreen(
-					navController = rememberNavController(),
-				)
+				MainScreen()
 			}
 		}
 	}
@@ -28,8 +25,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BookStorePreview() {
 	AmazonBookStorePracticeTheme {
-		MainScreen(
-			navController = rememberNavController(),
-		)
+		MainScreen()
 	}
 }

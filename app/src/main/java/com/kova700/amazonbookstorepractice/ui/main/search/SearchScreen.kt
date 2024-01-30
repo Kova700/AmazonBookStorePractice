@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +32,7 @@ import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
@@ -70,8 +71,9 @@ fun SearchScreen(
 	onKeywordClear: () -> Unit,
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 ) {
-	val lazyGridState = rememberLazyGridState()
+	val lazyListState = rememberLazyListState()
 	val focusManager = LocalFocusManager.current
+	val scope = rememberCoroutineScope()
 	var searchOptionDialogState by remember { mutableStateOf(false) }
 
 	if (searchViewState.uiState == UiState.LOADING) {
@@ -95,14 +97,18 @@ fun SearchScreen(
 				onClick = { focusManager.clearFocus() }
 			)
 	) {
-		val rememberedOnSearchClick = remember { onSearchClick }
 
 		SearchBar(
 			searchKeyword = searchViewState.searchKeyWord,
 			onValueChange = onValueChange,
 			onTextFieldFocus = onTextFieldFocus,
 			onKeywordClear = onKeywordClear,
-			onSearchClick = rememberedOnSearchClick,
+			onSearchClick = {
+				onSearchClick()
+				scope.launch {
+					lazyListState.scrollToItem(0)
+				}
+			},
 			onOptionClick = { searchOptionDialogState = true }
 		)
 
@@ -149,15 +155,14 @@ fun SearchScreen(
 
 			UiState.LOADING,
 			UiState.SUCCESS -> {
-				LaunchedEffect(lazyGridState.canScrollForward.not()) {
-					if (lazyGridState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
+				LaunchedEffect(lazyListState.canScrollForward.not()) {
+					if (lazyListState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
 						onLoadNextData()
 					}
 				}
 
 				SearchResult(
-					lazyGridState = lazyGridState,
-					modifier = Modifier.fillMaxWidth(),
+					lazyListState = lazyListState,
 					books = searchViewState.books,
 					onItemClick = navigateToDetailScreen,
 				)
