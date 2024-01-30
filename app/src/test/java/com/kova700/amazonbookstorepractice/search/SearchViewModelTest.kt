@@ -15,7 +15,6 @@ import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
 import com.kova700.amazonbookstorepractice.ui.main.search.UiState
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -57,12 +56,6 @@ class SearchViewModelTest {
 	private val mockHistoryResponse = listOf(
 		"이것은", "검색기록", "테스트", "데이터"
 	)
-
-	@Before
-	fun init() = runTest {
-		whenever(getSearchHistoryUseCase.invoke())
-			.thenReturn(mockHistoryResponse)
-	}
 
 	@Test
 	fun `초기 값 검사`() {
