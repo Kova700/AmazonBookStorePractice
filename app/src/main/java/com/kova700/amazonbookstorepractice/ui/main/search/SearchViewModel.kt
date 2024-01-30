@@ -33,13 +33,15 @@ class SearchViewModel @Inject constructor(
 	val viewState = _viewState.asStateFlow()
 
 	init {
-		loadSearchHistory()
+//		loadSearchHistory()
 	}
 
-	fun searchKeyword() {
+	fun searchKeyword(isLoadingTest :Boolean = false) {
 		if (viewState.value.searchKeyWord.isBlank()) return
 
 		updateState { copy(uiState = UiState.LOADING) }
+		if (isLoadingTest) return
+
 		addHistory()
 		loadSearchData()
 	}
@@ -89,7 +91,7 @@ class SearchViewModel @Inject constructor(
 		}
 	}
 
-	private fun loadSearchHistory() {
+	fun loadSearchHistory() {
 		viewModelScope.launch {
 			runCatching {
 				getSearchHistoryUseCase().toImmutableList()
