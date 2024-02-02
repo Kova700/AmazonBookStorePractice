@@ -37,9 +37,10 @@ class SearchHistoryRepositoryImpl @Inject constructor(
 	override suspend fun addHistory(searchKeyword: String) {
 		if (cachedHistoryList.firstOrNull() == searchKeyword) return
 
-		cachedHistoryList = mutableSetOf(searchKeyword)
-			.apply { addAll(cachedHistoryList.toMutableSet()) }
-			.toMutableList()
+		cachedHistoryList = mutableListOf(searchKeyword)
+			.apply { addAll(cachedHistoryList) }
+			.toMutableSet().toMutableList()
+
 		val newHistoryString = Json.encodeToString(cachedHistoryList)
 		dataStore.edit { mutablePreferences ->
 			mutablePreferences[historyKey] = newHistoryString
