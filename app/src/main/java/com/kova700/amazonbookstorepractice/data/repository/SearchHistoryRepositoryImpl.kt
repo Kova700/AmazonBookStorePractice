@@ -40,19 +40,12 @@ class SearchHistoryRepositoryImpl @Inject constructor(
 		cachedHistoryList = mutableListOf(searchKeyword)
 			.apply { addAll(cachedHistoryList) }
 			.toMutableSet().toMutableList()
-
-		val newHistoryString = Json.encodeToString(cachedHistoryList)
-		dataStore.edit { mutablePreferences ->
-			mutablePreferences[historyKey] = newHistoryString
-		}
+		updateDataStore(cachedHistoryList)
 	}
 
 	override suspend fun removeHistory(index: Int) {
 		cachedHistoryList.removeAt(index)
-		val newHistoryString = Json.encodeToString(cachedHistoryList)
-		dataStore.edit { mutablePreferences ->
-			mutablePreferences[historyKey] = newHistoryString
-		}
+		updateDataStore(cachedHistoryList)
 	}
 
 	override suspend fun clearHistory() {
@@ -60,6 +53,13 @@ class SearchHistoryRepositoryImpl @Inject constructor(
 			mutablePreferences.remove(historyKey)
 		}
 		cachedHistoryList.clear()
+	}
+
+	private suspend fun updateDataStore(newList: List<String>) {
+		val newHistoryString = Json.encodeToString(newList)
+		dataStore.edit { mutablePreferences ->
+			mutablePreferences[historyKey] = newHistoryString
+		}
 	}
 
 }
