@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +27,7 @@ fun SearchResultItem(
 	title: String,
 	thumbnail: String,
 	price: Int,
-	expandedState :Boolean,
+	expandedState: Boolean,
 	modifier: Modifier = Modifier
 ) {
 	Box(
@@ -40,13 +38,15 @@ fun SearchResultItem(
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
+			val imageWidth = if (expandedState) 112 else 90
+			val imageHeight = if (expandedState) 162 else 130
 
 			SubcomposeAsyncImage(
 				model = thumbnail,
 				contentDescription = "bookThumbnail",
 				modifier = Modifier
-					.width(90.dp)
-					.height(130.dp)
+					.width(imageWidth.dp)
+					.height(imageHeight.dp)
 					.clip(RoundedCornerShape(6.dp)),
 				contentScale = ContentScale.Fit,
 				loading = { CircularProgressIndicator() },
@@ -54,7 +54,7 @@ fun SearchResultItem(
 
 			Spacer(modifier = Modifier.height(15.dp))
 
-			if (expandedState.not()){
+			if (expandedState.not()) {
 				Text(
 					text = title,
 					fontSize = 17.sp,
