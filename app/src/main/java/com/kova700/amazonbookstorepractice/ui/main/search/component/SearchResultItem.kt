@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +59,8 @@ fun SearchResultItem(
 					text = title,
 					fontSize = 17.sp,
 					textAlign = TextAlign.Center,
-					maxLines = 3
+					maxLines = 3,
+					overflow = TextOverflow.Ellipsis
 				)
 
 				Text(
@@ -73,6 +77,17 @@ fun SearchResultItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewResultItem() {
+	SearchResultItem(
+		title = "블라블라",
+		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",
+		price = 30600,
+		expandedState = false
+	)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewExpandedResultItem() {
 	SearchResultItem(
 		title = "블라블라",
 		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",
