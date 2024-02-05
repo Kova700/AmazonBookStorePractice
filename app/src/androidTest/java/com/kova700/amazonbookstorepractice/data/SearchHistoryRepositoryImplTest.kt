@@ -50,8 +50,9 @@ class SearchHistoryRepositoryImplTest {
 		searchHistoryRepository.addHistory("검색")
 		searchHistoryRepository.addHistory("기록")
 
-		assertEquals(searchHistoryRepository.getHistory(), listOf("기록", "검색", "이것은"))
-		assertEquals(searchHistoryRepository.cachedHistoryList, listOf("기록", "검색", "이것은"))
+		val expectedResults = listOf("기록", "검색", "이것은")
+		assertEquals(searchHistoryRepository.getHistory(), expectedResults)
+		assertEquals(searchHistoryRepository.cachedHistoryList, expectedResults)
 	}
 
 	@Test
@@ -61,8 +62,9 @@ class SearchHistoryRepositoryImplTest {
 		searchHistoryRepository.addHistory("기록")
 		searchHistoryRepository.removeHistory(index = 0)
 
-		assertEquals(searchHistoryRepository.getHistory(), listOf("검색", "이것은"))
-		assertEquals(searchHistoryRepository.cachedHistoryList, listOf("검색", "이것은"))
+		val expectedResults = listOf("검색", "이것은")
+		assertEquals(searchHistoryRepository.getHistory(), expectedResults)
+		assertEquals(searchHistoryRepository.cachedHistoryList, expectedResults)
 	}
 
 	@Test
