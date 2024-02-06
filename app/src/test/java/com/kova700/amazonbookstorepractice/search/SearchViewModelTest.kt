@@ -34,7 +34,6 @@ class SearchViewModelTest {
 	private val removeSearchHistoryUseCase = mock<RemoveSearchHistoryUseCase>()
 	private val clearSearchHistoryUseCase = mock<ClearSearchHistoryUseCase>()
 
-	//lateinit var, @InjectMocks는 왜 작동하지 않는걸까..?
 	private val searchViewModel = SearchViewModel(
 		getSearchedBookUseCase = getSearchedBookUseCase,
 		getPagingSearchBookUseCase = getPagingSearchBookUseCase,
