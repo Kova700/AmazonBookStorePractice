@@ -2,22 +2,16 @@ package com.kova700.amazonbookstorepractice.domain.repository
 
 import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
+import kotlinx.coroutines.flow.Flow
 
 interface BookSearchRepository {
 
-	suspend fun loadSearchData(
+	suspend fun getSearchResult(
 		query: String,
-		sort: KakaoBookSearchSortType = KakaoBookSearchSortType.ACCURACY,
-		page: Int = FIRST_PAGE,
-		size: Int = DEFAULT_PAGING_SIZE
+		sort: KakaoBookSearchSortType,
 	): List<Book>
 
-	suspend fun loadMoreSearchData(): List<Book>
+	fun getSearchResultFlow(): Flow<List<Book>>
 
-	fun getBook(index: Int): Book
-
-	companion object {
-		const val FIRST_PAGE = 1
-		const val DEFAULT_PAGING_SIZE = 20
-	}
+	fun getCachedBook(index: Int): Book
 }

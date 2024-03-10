@@ -5,35 +5,31 @@ import com.kova700.amazonbookstorepractice.data.mapper.toDomain
 import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository
-import com.kova700.amazonbookstorepractice.domain.repository.BookSearchRepository.Companion.FIRST_PAGE
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 class BookSearchRepositoryImpl @Inject constructor(
 	private val bookSearchService: BookSearchService
 ) : BookSearchRepository {
 
-	//TODO : Think : cachedBooks는 화면 이동 후, 현재 화면에서 사용되지 않는다면
-	// 메모리에 계속 남아있는게 맞을까..? 사라지게 하는게 좋겠지..?
+	private val books = MutableStateFlow<List<Book>>(emptyList())
 
-	private val cachedBooks = mutableListOf<Book>()
 	private var cachedSearchKeyword = ""
 	private var cachedSortType = KakaoBookSearchSortType.ACCURACY
 	private var cachedPage = FIRST_PAGE
 	private var isEndPage = false
 
-	override suspend fun loadSearchData(
-		query: String, sort: KakaoBookSearchSortType, page: Int, size: Int
+	override fun getSearchResultFlow(): Flow<List<Book>> {
+		return books.asStateFlow()
+	}
+
+	override suspend fun getSearchResult(
+		query: String, sort: KakaoBookSearchSortType
 	): List<Book> {
-
-		if (query == cachedSearchKeyword &&
-			sort == cachedSortType &&
-			page < cachedPage
-		) return cachedBooks
-
-		val response = bookSearchService.searchBooks(
-			query = query, page = page,
-			sort = sort.toString().lowercase(), size = size
-		)
+		if (query == cachedSearchKeyword && sort == cachedSortType && isEndPage) return books.value
 
 		if (query != cachedSearchKeyword || sort != cachedSortType) {
 			clearCachedData(
@@ -42,30 +38,34 @@ class BookSearchRepositoryImpl @Inject constructor(
 			)
 		}
 
-		cachedBooks.addAll(response.books
+		val response = bookSearchService.searchBooks(
+			query = query, page = cachedPage,
+			sort = sort.toString().lowercase(),
+			size = DEFAULT_PAGING_SIZE
+		)
+
+		val newData = response.books
 			.filter { it.thumbnail.isNotBlank() }
 			.map { it.copy(url = it.url.toMobileUrl()) }
-			.toDomain())
+			.toDomain()
+
+		books.update { books.value + newData }
 
 		isEndPage = response.meta.isEnd
 		cachedPage++
-
-		return cachedBooks
+		return books.value
 	}
 
-	override suspend fun loadMoreSearchData(): List<Book> {
-		if (isEndPage) return cachedBooks
-
-		return loadSearchData(
-			query = cachedSearchKeyword,
-			sort = cachedSortType,
-			page = cachedPage
-		)
+	private fun clearCachedData(query: String, sort: KakaoBookSearchSortType) {
+		books.update { emptyList() }
+		cachedPage = FIRST_PAGE
+		cachedSearchKeyword = query
+		cachedSortType = sort
+		isEndPage = false
 	}
 
-	//인덱스에 없는경우 예외 처리 해야함
-	override fun getBook(index: Int): Book {
-		return cachedBooks[index]
+	override fun getCachedBook(index: Int): Book {
+		return books.value[index]
 	}
 
 	private fun String.toMobileUrl(): String {
@@ -75,15 +75,9 @@ class BookSearchRepositoryImpl @Inject constructor(
 		)
 	}
 
-	private fun clearCachedData(
-		query: String,
-		sort: KakaoBookSearchSortType
-	) {
-		cachedBooks.clear()
-		cachedPage = FIRST_PAGE
-		cachedSearchKeyword = query
-		cachedSortType = sort
-		isEndPage = false
+	companion object {
+		const val FIRST_PAGE = 1
+		const val DEFAULT_PAGING_SIZE = 20
 	}
 
 }

@@ -44,13 +44,14 @@ fun SearchScreen(
 	SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
+		onItemExpend = searchViewModel::onItemExpend,
 		onValueChange = searchViewModel::changeSearchKeyword,
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
 		onHistoryRemoveClick = searchViewModel::onHistoryRemoveClick,
 		onHistoryClearClick = searchViewModel::onHistoryClearClick,
 		onSearchClick = searchViewModel::searchKeyword,
-		onLoadNextData = searchViewModel::loadNextSearchData,
+		onLoadNextData = searchViewModel::loadNextSearchResult,
 		onKeywordClear = searchViewModel::onKeywordClear,
 		onSortOptionChange = searchViewModel::onSortOptionChange,
 	)
@@ -61,6 +62,7 @@ fun SearchScreen(
 fun SearchScreen(
 	searchViewState: SearchViewState,
 	navigateToDetailScreen: (Int) -> Unit,
+	onItemExpend: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
 	onTextFieldFocus: () -> Unit,
 	onHistoryClick: (String) -> Unit,
@@ -156,7 +158,7 @@ fun SearchScreen(
 			UiState.LOADING,
 			UiState.SUCCESS -> {
 				LaunchedEffect(lazyListState.canScrollForward.not()) {
-					if (lazyListState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
+					if (lazyListState.canScrollForward.not() && (searchViewState.uiState != UiState.LOADING)) {
 						onLoadNextData()
 					}
 				}
@@ -165,6 +167,7 @@ fun SearchScreen(
 					lazyListState = lazyListState,
 					books = searchViewState.books,
 					onItemClick = navigateToDetailScreen,
+					onItemExpend = onItemExpend
 				)
 			}
 		}
@@ -209,6 +212,7 @@ fun SearchScreenPreview() {
 			)
 		),
 		navigateToDetailScreen = {},
+		onItemExpend = {},
 		onValueChange = {},
 		onTextFieldFocus = {},
 		onHistoryClick = {},

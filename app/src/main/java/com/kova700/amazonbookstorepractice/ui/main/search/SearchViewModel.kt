@@ -5,15 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.AddSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.ClearSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.domain.usecase.GetPagingSearchBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchHistoryUseCase
+import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookFlowUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.RemoveSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
+import com.kova700.amazonbookstorepractice.ui.main.mapper.toItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
 	private val getSearchedBookUseCase: GetSearchedBookUseCase,
-	private val getPagingSearchBookUseCase: GetPagingSearchBookUseCase,
+	private val getSearchedBookFlowUseCase: GetSearchedBookFlowUseCase,
 	private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
 	private val addSearchHistoryUseCase: AddSearchHistoryUseCase,
 	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase,
@@ -32,60 +34,47 @@ class SearchViewModel @Inject constructor(
 		MutableStateFlow(SearchViewState.Default)
 	val viewState = _viewState.asStateFlow()
 
-	fun searchKeyword(isLoadingTest :Boolean = false) {
-		if (viewState.value.searchKeyWord.isBlank()) return
+	private val _isExpanded = MutableStateFlow<Map<String, Boolean>>(emptyMap()) //(isbn, boolean)
 
+	init {
+		observeSearchResult()
+	}
+
+	private fun observeSearchResult() = viewModelScope.launch {
+		getSearchedBookFlowUseCase().combine(_isExpanded) { books, isExpandedMap ->
+			books.map { book ->
+				if (isExpandedMap[book.isbn] == true) book.toItem(isExpanded = true)
+				else book.toItem()
+			}
+		}.collect { newBooks -> updateState { copy(books = newBooks.toImmutableList()) } }
+	}
+
+	private fun getSearchResult(isLoadingTest: Boolean = false) = viewModelScope.launch {
 		updateState { copy(uiState = UiState.LOADING) }
-		if (isLoadingTest) return
+		if (isLoadingTest) return@launch
 
+		runCatching {
+			getSearchedBookUseCase(
+				query = viewState.value.searchKeyWord,
+				sort = viewState.value.sortType,
+			)
+		}.onSuccess { books ->
+			updateState { copy(uiState = if (books.isEmpty()) UiState.EMPTY else UiState.SUCCESS) }
+		}.onFailure { handleError(it) }
+	}
+
+	fun loadNextSearchResult() {
+		getSearchResult()
+	}
+
+	fun searchKeyword() {
+		if (viewState.value.searchKeyWord.isBlank()) return
 		addHistory()
-		loadSearchData()
+		getSearchResult()
 	}
 
 	fun changeSearchKeyword(keyword: String) {
 		updateState { copy(searchKeyWord = keyword.trim()) }
-	}
-
-	private fun loadSearchData() {
-		viewModelScope.launch {
-			runCatching {
-				getSearchedBookUseCase(
-					query = viewState.value.searchKeyWord,
-					sort = viewState.value.sortType,
-				).toItemList()
-			}.onSuccess { books ->
-				updateState {
-					copy(
-						uiState = if (books.isNotEmpty()) UiState.SUCCESS else UiState.EMPTY,
-						books = books,
-					)
-				}
-			}.onFailure {
-				updateState {
-					copy(uiState = UiState.ERROR)
-				}
-			}
-		}
-	}
-
-	fun loadNextSearchData(isLoadingTest :Boolean = false) {
-		updateState { copy(uiState = UiState.LOADING) }
-		if (isLoadingTest) return
-
-		viewModelScope.launch {
-			runCatching {
-				getPagingSearchBookUseCase().toItemList()
-			}.onSuccess { books ->
-				updateState {
-					copy(
-						uiState = UiState.SUCCESS,
-						books = books,
-					)
-				}
-			}.onFailure {
-				updateState { copy(uiState = UiState.ERROR) }
-			}
-		}
 	}
 
 	fun loadSearchHistory() {
@@ -132,9 +121,33 @@ class SearchViewModel @Inject constructor(
 		updateState { copy(sortType = sortOption) }
 	}
 
+	fun onItemExpend(index: Int) {
+		val newList = viewState.value.books.toMutableList()
+		val columnCount = 2
+		val rowIndex = index / columnCount
+
+		//같은 행에 확장된 Item이 있다면 확장 취소 후 다른 Item 확장 표시
+		for (i in 0 until columnCount) {
+			if (i > newList.lastIndex) return
+			newList[rowIndex * columnCount + i] =
+				newList[rowIndex * columnCount + i].copy(isExpanded = false)
+		}
+		val targetItem = viewState.value.books[index]
+		_isExpanded.update { _isExpanded.value + (targetItem.isbn to targetItem.isExpanded.not()) }
+
+		newList[index] = targetItem
+			.copy(isExpanded = targetItem.isExpanded.not())
+		updateState { copy(books = newList.toPersistentList()) }
+	}
+
 	private inline fun updateState(block: SearchViewState.() -> SearchViewState) {
 		_viewState.update {
 			_viewState.value.block()
 		}
+	}
+
+	private fun handleError(throwable: Throwable) {
+		updateState { copy(uiState = UiState.ERROR) }
+
 	}
 }

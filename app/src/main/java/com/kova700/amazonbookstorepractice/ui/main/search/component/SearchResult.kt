@@ -1,6 +1,6 @@
 package com.kova700.amazonbookstorepractice.ui.main.search.component
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,11 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -37,48 +32,59 @@ import coil.compose.SubcomposeAsyncImage
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import kotlinx.collections.immutable.ImmutableList
 
+const val COLUMN_COUNT = 2
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchResult(
 	lazyListState: LazyListState,
 	onItemClick: (Int) -> Unit,
 	books: ImmutableList<BookItem>,
+	onItemExpend: (Int) -> Unit,
 ) {
-	val columnCount = 2
 
+	/**
+	 * 하단 애니메이션 사용과 행간 텍스트 높이 통일을 위해 GridLazyColumn에서 LazyColumn로 변경
+	 */
 	LazyColumn(
 		modifier = Modifier.fillMaxSize(),
 		state = lazyListState
 	) {
-		items(
-			count = (books.size + 1) / columnCount,
-			key = { index -> books[index].isbn + books[index].hashCode() }
-		) { rowIndex ->
 
-			var expandedState by remember { mutableStateOf(false) }
-			var expandedIndex by remember { mutableIntStateOf(-1) }
+		items(
+			count = (books.size + 1) / COLUMN_COUNT,
+			key = { rowIndex ->
+				val leftItemIndex = rowIndex * COLUMN_COUNT
+				if (leftItemIndex == books.lastIndex) books[leftItemIndex].isbn
+				else books[leftItemIndex].isbn + books[leftItemIndex + 1].isbn
+			}
+		) { rowIndex ->
+			val leftItemIndex = rowIndex * COLUMN_COUNT
+			val expandedIndex = when {
+				books[leftItemIndex].isExpanded -> leftItemIndex
+				(leftItemIndex != books.lastIndex) && books[leftItemIndex + 1].isExpanded -> leftItemIndex + 1
+				else -> null
+			}
 
 			Row(
 				modifier = Modifier
 					.height(IntrinsicSize.Max)
+					.animateItemPlacement()
 			) {
-				for (i in 0 until columnCount) {
-					val itemIndex = rowIndex * columnCount + i
+				for (i in 0 until COLUMN_COUNT) {
+					val itemIndex = rowIndex * COLUMN_COUNT + i
 
 					if (itemIndex < books.size) {
-						//TODO : 펼쳐진 상태에서 다른 아이템 눌리면 접히는게 아니라 다른 아이템으로 변경되게 수정
 						SearchResultItem(
 							title = books[itemIndex].title,
 							thumbnail = books[itemIndex].thumbnail,
 							price = books[itemIndex].price,
-							expandedState = (expandedIndex == itemIndex) && expandedState,
+							expandedState = (expandedIndex == itemIndex),
 							modifier = Modifier
 								.fillMaxHeight()
 								.weight(1f)
 								.border(1.dp, Color(0xFFEEEEEE))
-								.clickable {
-									expandedState = !expandedState
-									expandedIndex = itemIndex
-								}
+								.clickable { onItemExpend(itemIndex) }
 								.padding(15.dp)
 						)
 					} else {
@@ -87,14 +93,13 @@ fun SearchResult(
 				}
 			}
 
-			AnimatedVisibility(visible = expandedState) {
+			if (expandedIndex != null) {
 				ExpandedContent(
 					expandedIndex = expandedIndex,
 					onItemClick = onItemClick,
 					bookItem = books[expandedIndex]
 				)
 			}
-
 		}
 	}
 }
