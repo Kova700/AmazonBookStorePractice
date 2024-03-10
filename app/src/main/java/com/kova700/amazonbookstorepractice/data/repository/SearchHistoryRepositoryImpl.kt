@@ -1,5 +1,6 @@
 package com.kova700.amazonbookstorepractice.data.repository
 
+import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -20,7 +21,8 @@ class SearchHistoryRepositoryImpl @Inject constructor(
 ) : SearchHistoryRepository {
 	private val historyKey = stringPreferencesKey("HISTORY_KEY")
 
-	private var cachedHistoryList = mutableListOf<String>()
+	@VisibleForTesting
+	var cachedHistoryList = mutableListOf<String>()
 
 	override fun getSearchHistoryFlow(): Flow<List<String>> {
 		return dataStore.data
@@ -28,9 +30,8 @@ class SearchHistoryRepositoryImpl @Inject constructor(
 			.map {
 				it[historyKey]?.let { historyString ->
 					Json.decodeFromString<List<String>>(historyString)
-				}
-			}.filterNotNull()
-			.onEach { cachedHistoryList = it.toMutableList() }
+				} ?: emptyList()
+			}.onEach { cachedHistoryList = it.toMutableList() }
 	}
 
 	override suspend fun addHistory(searchKeyword: String) {
