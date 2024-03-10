@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.ui.main.search.component
+package com.kova700.amazonbookstorepractice.ui.main.search.component.searchresult
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

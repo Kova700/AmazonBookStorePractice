@@ -5,7 +5,6 @@ import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.AddSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.ClearSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.domain.usecase.GetPagingSearchBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.RemoveSearchHistoryUseCase
