@@ -111,6 +111,7 @@ private fun SearchContent(
 		)
 
 		when (searchViewState.uiState) {
+			UiState.DEFAULT -> {}
 			UiState.ERROR -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),

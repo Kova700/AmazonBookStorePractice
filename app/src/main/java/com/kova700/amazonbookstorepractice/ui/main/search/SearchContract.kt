@@ -16,7 +16,7 @@ data class SearchViewState(
 	companion object {
 		val Default = SearchViewState(
 			searchKeyWord = "",
-			uiState = UiState.HISTORY,
+			uiState = UiState.DEFAULT,
 			sortType = KakaoBookSearchSortType.ACCURACY,
 			books = persistentListOf(),
 		)
@@ -24,6 +24,7 @@ data class SearchViewState(
 }
 
 enum class UiState {
+	DEFAULT,
 	SUCCESS,
 	LOADING,
 	ERROR,
