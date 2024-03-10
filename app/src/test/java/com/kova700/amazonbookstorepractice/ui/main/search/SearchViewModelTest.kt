@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.search
+package com.kova700.amazonbookstorepractice.ui.main.search
 
 import androidx.lifecycle.SavedStateHandle
 import com.kova700.amazonbookstorepractice.MainCoroutineRule
