@@ -27,9 +27,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchBar
-import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchHistory
-import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResult
-import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchResultLoading
+import com.kova700.amazonbookstorepractice.ui.main.search.component.searchhistory.SearchHistory
+import com.kova700.amazonbookstorepractice.ui.main.search.component.searchresult.SearchResult
+import com.kova700.amazonbookstorepractice.ui.main.search.component.searchresult.SearchResultLoading
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -41,16 +41,17 @@ fun SearchScreen(
 ) {
 	val searchViewState by searchViewModel.viewState.collectAsStateWithLifecycle()
 
-	SearchScreen(
+	SearchContent(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
+		onItemExpend = searchViewModel::onItemExpend,
 		onValueChange = searchViewModel::changeSearchKeyword,
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
 		onHistoryRemoveClick = searchViewModel::onHistoryRemoveClick,
 		onHistoryClearClick = searchViewModel::onHistoryClearClick,
 		onSearchClick = searchViewModel::searchKeyword,
-		onLoadNextData = searchViewModel::loadNextSearchData,
+		onLoadNextData = searchViewModel::loadNextSearchResult,
 		onKeywordClear = searchViewModel::onKeywordClear,
 		onSortOptionChange = searchViewModel::onSortOptionChange,
 	)
@@ -58,9 +59,10 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchScreen(
+private fun SearchContent(
 	searchViewState: SearchViewState,
 	navigateToDetailScreen: (Int) -> Unit,
+	onItemExpend: (Int) -> Unit,
 	onValueChange: (String) -> Unit,
 	onTextFieldFocus: () -> Unit,
 	onHistoryClick: (String) -> Unit,
@@ -156,7 +158,7 @@ fun SearchScreen(
 			UiState.LOADING,
 			UiState.SUCCESS -> {
 				LaunchedEffect(lazyListState.canScrollForward.not()) {
-					if (lazyListState.canScrollForward.not() && (searchViewState.uiState == UiState.SUCCESS)) {
+					if (lazyListState.canScrollForward.not() && (searchViewState.uiState != UiState.LOADING)) {
 						onLoadNextData()
 					}
 				}
@@ -165,6 +167,7 @@ fun SearchScreen(
 					lazyListState = lazyListState,
 					books = searchViewState.books,
 					onItemClick = navigateToDetailScreen,
+					onItemExpend = onItemExpend
 				)
 			}
 		}
@@ -175,7 +178,7 @@ fun SearchScreen(
 @Preview(showBackground = true)
 @Composable
 fun SearchScreenPreview() {
-	SearchScreen(
+	SearchContent(
 		searchViewState = SearchViewState.Default.copy(
 			books = persistentListOf(
 				BookItem.Default.copy(
@@ -209,6 +212,7 @@ fun SearchScreenPreview() {
 			)
 		),
 		navigateToDetailScreen = {},
+		onItemExpend = {},
 		onValueChange = {},
 		onTextFieldFocus = {},
 		onHistoryClick = {},

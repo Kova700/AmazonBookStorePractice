@@ -12,7 +12,7 @@ class GetSearchedBookUseCase @Inject constructor(
 		query: String,
 		sort: KakaoBookSearchSortType,
 	): List<Book> {
-		return repository.loadSearchData(
+		return repository.getSearchResult(
 			query = query,
 			sort = sort,
 		)

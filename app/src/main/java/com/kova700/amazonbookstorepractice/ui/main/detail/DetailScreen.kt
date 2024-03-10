@@ -38,7 +38,7 @@ fun DetailScreen(
 ) {
 	val book by detailViewModel.viewState.collectAsStateWithLifecycle()
 
-	DetailScreen(
+	DetailContent(
 		title = book.title,
 		thumbnail = book.thumbnail,
 		authors = book.authors,
@@ -55,7 +55,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun DetailScreen(
+private fun DetailContent(
 	title: String,
 	thumbnail: String,
 	authors: ImmutableList<String>,
@@ -154,7 +154,7 @@ fun DetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewDetail() {
-	DetailScreen(
+	DetailContent(
 		title = "책 제목 블라블라블라블라",
 		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",
 		authors = persistentListOf("작가이름은", "마바사"),

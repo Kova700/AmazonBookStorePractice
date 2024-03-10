@@ -69,6 +69,8 @@ class SearchHistoryRepositoryImplTest {
 
 	@Test
 	fun 검색기록_초기화() = runTest {
+		searchHistoryRepository.addHistory("기록")
+
 		searchHistoryRepository.clearHistory()
 
 		assertTrue(searchHistoryRepository.cachedHistoryList.isEmpty())

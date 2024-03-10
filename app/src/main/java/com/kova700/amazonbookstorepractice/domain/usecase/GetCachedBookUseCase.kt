@@ -8,6 +8,6 @@ class GetCachedBookUseCase @Inject constructor(
 	private val repository: BookSearchRepository
 ) {
 	operator fun invoke(index: Int): Book {
-		return repository.getBook(index)
+		return repository.getCachedBook(index)
 	}
 }

@@ -4,7 +4,7 @@ import com.kova700.amazonbookstorepractice.domain.model.Book
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import kotlinx.collections.immutable.toImmutableList
 
-fun Book.toItem() =
+fun Book.toItem(isExpanded: Boolean = false) =
 	BookItem(
 		title = title,
 		thumbnail = thumbnail,
@@ -17,7 +17,8 @@ fun Book.toItem() =
 		status = status,
 		translators = translators.toImmutableList(),
 		url = url,
-		salePrice = salePrice
+		salePrice = salePrice,
+		isExpanded = isExpanded
 	)
 
-fun List<Book>.toItemList() = this.map { it.toItem() }.toImmutableList()
+fun List<Book>.toItemList() = this.map { it.toItem() }

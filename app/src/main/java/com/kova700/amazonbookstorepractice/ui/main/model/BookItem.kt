@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+sealed interface SearchResultBookItem
+
 @Immutable
 data class BookItem(
 	val title: String,
@@ -17,8 +19,9 @@ data class BookItem(
 	val status: String,
 	val translators: ImmutableList<String>,
 	val url: String,
-	val salePrice: Int
-) {
+	val salePrice: Int,
+	val isExpanded: Boolean = false
+) : SearchResultBookItem {
 	companion object {
 		val Default = BookItem(
 			title = "",
@@ -32,7 +35,8 @@ data class BookItem(
 			status = "",
 			translators = persistentListOf(),
 			url = "",
-			salePrice = 0
+			salePrice = 0,
+			isExpanded = false
 		)
 	}
 }
