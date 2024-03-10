@@ -12,7 +12,6 @@ data class SearchViewState(
 	val uiState: UiState,
 	val sortType: KakaoBookSearchSortType,
 	val books: ImmutableList<BookItem>,
-	val searchHistory: ImmutableList<String>
 ) {
 	companion object {
 		val Default = SearchViewState(
@@ -20,7 +19,6 @@ data class SearchViewState(
 			uiState = UiState.HISTORY,
 			sortType = KakaoBookSearchSortType.ACCURACY,
 			books = persistentListOf(),
-			searchHistory = persistentListOf(),
 		)
 	}
 }

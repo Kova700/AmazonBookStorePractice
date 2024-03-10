@@ -27,10 +27,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.ui.main.model.BookItem
 import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchBar
-import com.kova700.amazonbookstorepractice.ui.main.search.component.searchhistory.SearchHistory
+import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
+import com.kova700.amazonbookstorepractice.ui.main.search.component.history.SearchHistoryScreen
 import com.kova700.amazonbookstorepractice.ui.main.search.component.searchresult.SearchResult
 import com.kova700.amazonbookstorepractice.ui.main.search.component.searchresult.SearchResultLoading
-import com.kova700.amazonbookstorepractice.ui.main.search.component.SearchSortOptionDialog
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
@@ -48,8 +48,6 @@ fun SearchScreen(
 		onValueChange = searchViewModel::changeSearchKeyword,
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
-		onHistoryRemoveClick = searchViewModel::onHistoryRemoveClick,
-		onHistoryClearClick = searchViewModel::onHistoryClearClick,
 		onSearchClick = searchViewModel::searchKeyword,
 		onLoadNextData = searchViewModel::loadNextSearchResult,
 		onKeywordClear = searchViewModel::onKeywordClear,
@@ -66,8 +64,6 @@ private fun SearchContent(
 	onValueChange: (String) -> Unit,
 	onTextFieldFocus: () -> Unit,
 	onHistoryClick: (String) -> Unit,
-	onHistoryRemoveClick: (Int) -> Unit,
-	onHistoryClearClick: () -> Unit,
 	onSearchClick: () -> Unit,
 	onLoadNextData: () -> Unit,
 	onKeywordClear: () -> Unit,
@@ -140,19 +136,10 @@ private fun SearchContent(
 			}
 
 			UiState.HISTORY -> {
-				if (searchViewState.searchHistory.isNotEmpty()) {
-
-					val rememberedOnHistoryClick = remember { onHistoryClick }
-					val rememberedOnHistoryRemoveClick = remember { onHistoryRemoveClick }
-					val rememberedOnHistoryClearClick = remember { onHistoryClearClick }
-
-					SearchHistory(
-						historyList = searchViewState.searchHistory,
-						onHistoryClick = rememberedOnHistoryClick,
-						onHistoryRemoveClick = rememberedOnHistoryRemoveClick,
-						onHistoryClearClick = rememberedOnHistoryClearClick,
-					)
-				}
+				val rememberedOnHistoryClick = remember { onHistoryClick }
+				SearchHistoryScreen(
+					onHistoryClick = rememberedOnHistoryClick,
+				)
 			}
 
 			UiState.LOADING,
@@ -216,8 +203,6 @@ fun SearchScreenPreview() {
 		onValueChange = {},
 		onTextFieldFocus = {},
 		onHistoryClick = {},
-		onHistoryRemoveClick = {},
-		onHistoryClearClick = {},
 		onSearchClick = {},
 		onLoadNextData = {},
 		onKeywordClear = {},

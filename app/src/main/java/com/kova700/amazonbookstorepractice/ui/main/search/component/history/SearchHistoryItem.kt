@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice.ui.main.search.component.searchhistory
+package com.kova700.amazonbookstorepractice.ui.main.search.component.history
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +23,7 @@ import com.kova700.amazonbookstorepractice.R
 @Composable
 fun SearchHistoryItem(
 	historyString: String,
-	onHistoryClick: (String) -> Unit,
+	onHistoryClick: () -> Unit,
 	onHistoryRemoveClick: () -> Unit,
 	focusManager: FocusManager? = null
 ) {
@@ -32,7 +32,7 @@ fun SearchHistoryItem(
 			.fillMaxWidth()
 			.padding(horizontal = 20.dp)
 			.clickable {
-				onHistoryClick(historyString)
+				onHistoryClick()
 				focusManager?.clearFocus()
 			},
 		horizontalArrangement = Arrangement.Absolute.SpaceBetween,

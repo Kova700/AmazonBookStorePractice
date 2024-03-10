@@ -4,11 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.domain.usecase.AddSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.domain.usecase.ClearSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookFlowUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchedBookUseCase
-import com.kova700.amazonbookstorepractice.domain.usecase.RemoveSearchHistoryUseCase
 import com.kova700.amazonbookstorepractice.ui.main.mapper.toItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -24,10 +21,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
 	private val getSearchedBookUseCase: GetSearchedBookUseCase,
 	private val getSearchedBookFlowUseCase: GetSearchedBookFlowUseCase,
-	private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
 	private val addSearchHistoryUseCase: AddSearchHistoryUseCase,
-	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase,
-	private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
 ) : ViewModel() {
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
@@ -77,18 +71,6 @@ class SearchViewModel @Inject constructor(
 		updateState { copy(searchKeyWord = keyword.trim()) }
 	}
 
-	fun loadSearchHistory() {
-		viewModelScope.launch {
-			runCatching {
-				getSearchHistoryUseCase().toImmutableList()
-			}.onSuccess { historyList ->
-				updateState {
-					copy(searchHistory = historyList)
-				}
-			}
-		}
-	}
-
 	private fun addHistory() = viewModelScope.launch {
 		addSearchHistoryUseCase(viewState.value.searchKeyWord)
 	}
@@ -98,23 +80,12 @@ class SearchViewModel @Inject constructor(
 	}
 
 	fun showHistory() {
-		loadSearchHistory()
 		updateState { copy(uiState = UiState.HISTORY) }
 	}
 
 	fun onHistoryClick(keyword: String) {
 		updateState { copy(searchKeyWord = keyword) }
 		searchKeyword()
-	}
-
-	fun onHistoryRemoveClick(index: Int) = viewModelScope.launch {
-		removeSearchHistoryUseCase(index)
-		loadSearchHistory()
-	}
-
-	fun onHistoryClearClick() = viewModelScope.launch {
-		clearSearchHistoryUseCase()
-		loadSearchHistory()
 	}
 
 	fun onSortOptionChange(sortOption: KakaoBookSearchSortType) {
