@@ -1,5 +1,7 @@
 package com.kova700.amazonbookstorepractice.ui.main.search
 
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
@@ -19,22 +21,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+	savedStateHandle: SavedStateHandle,
 	private val getSearchedBookUseCase: GetSearchedBookUseCase,
 	private val getSearchedBookFlowUseCase: GetSearchedBookFlowUseCase,
 	private val addSearchHistoryUseCase: AddSearchHistoryUseCase,
 ) : ViewModel() {
+	private val isTest = savedStateHandle.get<Boolean>(IS_TEST_FLAG) ?: false
 
 	private val _viewState: MutableStateFlow<SearchViewState> =
 		MutableStateFlow(SearchViewState.Default)
 	val viewState = _viewState.asStateFlow()
 
-	private val _isExpanded = MutableStateFlow<Map<String, Boolean>>(emptyMap()) //(isbn, boolean)
+	@VisibleForTesting
+	val _isExpanded = MutableStateFlow<Map<String, Boolean>>(emptyMap()) //(isbn, boolean)
 
 	init {
-		observeSearchResult()
+		if (isTest.not()) {
+			observeSearchResult()
+		}
 	}
 
-	private fun observeSearchResult() = viewModelScope.launch {
+	@VisibleForTesting
+	fun observeSearchResult() = viewModelScope.launch {
 		getSearchedBookFlowUseCase().combine(_isExpanded) { books, isExpandedMap ->
 			books.map { book ->
 				if (isExpandedMap[book.isbn] == true) book.toItem(isExpanded = true)
@@ -57,14 +65,14 @@ class SearchViewModel @Inject constructor(
 		}.onFailure { handleError(it) }
 	}
 
-	fun loadNextSearchResult() {
-		getSearchResult()
+	fun loadNextSearchResult(isLoadingTest: Boolean = false) {
+		getSearchResult(isLoadingTest)
 	}
 
-	fun searchKeyword() {
+	fun searchKeyword(isLoadingTest: Boolean = false) {
 		if (viewState.value.searchKeyWord.isBlank()) return
 		addHistory()
-		getSearchResult()
+		getSearchResult(isLoadingTest)
 	}
 
 	fun changeSearchKeyword(keyword: String) {
@@ -119,6 +127,9 @@ class SearchViewModel @Inject constructor(
 
 	private fun handleError(throwable: Throwable) {
 		updateState { copy(uiState = UiState.ERROR) }
+	}
 
+	companion object {
+		const val IS_TEST_FLAG = "IS_TEST_FLAG"
 	}
 }
