@@ -30,4 +30,21 @@ data class NetworkBook(
 	@SerialName("translators") val translators: List<String>,
 	@SerialName("url") val url: String,
 	@SerialName("sale_price") val salePrice: Int
-)
+) {
+	companion object {
+		val DEFAULT = NetworkBook(
+			title = "",
+			thumbnail = "",
+			authors = emptyList(),
+			price = 1,
+			contents = "",
+			datetime = "",
+			isbn = "",
+			publisher = "",
+			status = "",
+			translators = emptyList(),
+			url = "",
+			salePrice = 1
+			)
+	}
+}
