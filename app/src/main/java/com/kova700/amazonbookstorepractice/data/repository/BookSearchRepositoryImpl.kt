@@ -1,5 +1,6 @@
 package com.kova700.amazonbookstorepractice.data.repository
 
+import androidx.annotation.VisibleForTesting
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
 import com.kova700.amazonbookstorepractice.data.mapper.toDomain
 import com.kova700.amazonbookstorepractice.domain.model.Book
@@ -15,12 +16,20 @@ class BookSearchRepositoryImpl @Inject constructor(
 	private val bookSearchService: BookSearchService
 ) : BookSearchRepository {
 
-	private val books = MutableStateFlow<List<Book>>(emptyList())
+	@VisibleForTesting
+	val books = MutableStateFlow<List<Book>>(emptyList())
 
-	private var cachedSearchKeyword = ""
-	private var cachedSortType = KakaoBookSearchSortType.ACCURACY
-	private var cachedPage = FIRST_PAGE
-	private var isEndPage = false
+	@VisibleForTesting
+	var cachedSearchKeyword = ""
+
+	@VisibleForTesting
+	var cachedSortType = KakaoBookSearchSortType.ACCURACY
+
+	@VisibleForTesting
+	var cachedPage = FIRST_PAGE
+
+	@VisibleForTesting
+	var isEndPage = false
 
 	override fun getSearchResultFlow(): Flow<List<Book>> {
 		return books.asStateFlow()
@@ -46,11 +55,11 @@ class BookSearchRepositoryImpl @Inject constructor(
 
 		val newData = response.books
 			.filter { it.thumbnail.isNotBlank() }
-			.map { it.copy(url = it.url.toMobileUrl()) }
-			.toDomain()
+			.map { it.copy(url = it.url.toMobileUrl()).toDomain() }
 
 		books.update { books.value + newData }
 
+		cachedSearchKeyword = query
 		isEndPage = response.meta.isEnd
 		cachedPage++
 		return books.value
@@ -68,16 +77,17 @@ class BookSearchRepositoryImpl @Inject constructor(
 		return books.value[index]
 	}
 
-	private fun String.toMobileUrl(): String {
-		return this.replace(
-			oldValue = "https://",
-			newValue = "https://m."
-		)
-	}
-
 	companion object {
 		const val FIRST_PAGE = 1
 		const val DEFAULT_PAGING_SIZE = 20
 	}
 
+}
+
+@VisibleForTesting
+fun String.toMobileUrl(): String {
+	return this.replace(
+		oldValue = "https://",
+		newValue = "https://m."
+	)
 }
