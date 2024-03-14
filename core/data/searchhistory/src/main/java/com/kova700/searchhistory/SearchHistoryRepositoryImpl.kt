@@ -15,7 +15,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class SearchHistoryRepositoryImpl @Inject constructor(
+internal class SearchHistoryRepositoryImpl @Inject constructor(
 	private val dataStore: DataStore<Preferences>
 ) : SearchHistoryRepository {
 	private val historyKey = stringPreferencesKey("HISTORY_KEY")
