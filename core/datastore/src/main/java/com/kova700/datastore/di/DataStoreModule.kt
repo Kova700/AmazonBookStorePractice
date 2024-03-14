@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DataStoreModule {
+internal object DataStoreModule {
 	private const val DATASTORE_KEY = "DATASTORE_KEY"
 	private val Context.dataStore by preferencesDataStore(DATASTORE_KEY)
 
