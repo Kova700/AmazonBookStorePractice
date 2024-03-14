@@ -27,7 +27,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object KtorModule {
+internal object KtorModule {
 	private const val KAKAO_BASE_URL = "dapi.kakao.com/v3"
 	private const val JSON_MEDIA_TYPE = "application/json"
 
