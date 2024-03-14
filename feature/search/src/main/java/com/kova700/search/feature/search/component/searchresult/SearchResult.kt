@@ -36,7 +36,7 @@ const val COLUMN_COUNT = 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SearchResult(
+internal fun SearchResult(
 	lazyListState: LazyListState,
 	onItemClick: (Int) -> Unit,
 	books: ImmutableList<BookItem>,
@@ -105,7 +105,7 @@ fun SearchResult(
 }
 
 @Composable
-fun ExpandedContent(
+private fun ExpandedContent(
 	expandedIndex: Int,
 	onItemClick: (Int) -> Unit,
 	bookItem: BookItem
@@ -161,7 +161,7 @@ fun ExpandedContent(
 
 @Composable
 @Preview(showBackground = true)
-fun ExpandedContentPreview() {
+private fun ExpandedContentPreview() {
 	ExpandedContent(
 		expandedIndex = 0,
 		onItemClick = {},

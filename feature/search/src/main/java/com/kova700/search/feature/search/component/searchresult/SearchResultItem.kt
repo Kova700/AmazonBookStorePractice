@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 
 @Composable
-fun SearchResultItem(
+internal fun SearchResultItem(
 	title: String,
 	thumbnail: String,
 	price: Int,
@@ -86,7 +86,7 @@ fun SearchResultItem(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewResultItem() {
+private fun PreviewResultItem() {
 	SearchResultItem(
 		title = "블라블라",
 		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",
@@ -97,7 +97,7 @@ fun PreviewResultItem() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewExpandedResultItem() {
+private fun PreviewExpandedResultItem() {
 	SearchResultItem(
 		title = "블라블라",
 		thumbnail = "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6468627%3Ftimestamp%3D20231116183409",

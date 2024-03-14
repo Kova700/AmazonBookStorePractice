@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchHistoryViewModel @Inject constructor(
+internal class SearchHistoryViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
 	private val getSearchHistoryFlowUseCase: GetSearchHistoryFlowUseCase,
 	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase,
@@ -57,6 +57,6 @@ class SearchHistoryViewModel @Inject constructor(
 	}
 
 	companion object {
-		const val IS_TEST_FLAG = "IS_TEST_FLAG"
+		internal const val IS_TEST_FLAG = "IS_TEST_FLAG"
 	}
 }

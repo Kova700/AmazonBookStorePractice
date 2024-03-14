@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchScreen(
+internal fun SearchScreen(
 	searchViewModel: SearchViewModel = hiltViewModel(),
 	navigateToDetailScreen: (Int) -> Unit,
 ) {

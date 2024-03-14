@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun SearchHistoryScreen(
+internal fun SearchHistoryScreen(
 	searchHistoryViewModel: SearchHistoryViewModel = hiltViewModel(),
 	onHistoryClick: (String) -> Unit,
 ) {
@@ -44,7 +44,7 @@ fun SearchHistoryScreen(
 }
 
 @Composable
-fun SearchHistoryContent(
+private fun SearchHistoryContent(
 	historyList: ImmutableList<String>,
 	onHistoryClick: (Int, String) -> Unit,
 	onHistoryRemoveClick: (Int) -> Unit,
@@ -101,7 +101,7 @@ fun SearchHistoryContent(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchHistoryPreview() {
+private fun SearchHistoryPreview() {
 	SearchHistoryContent(
 		historyList = persistentListOf("이것이123124", "검색기록", "테스트123"),
 		onHistoryClick = { a, b -> },

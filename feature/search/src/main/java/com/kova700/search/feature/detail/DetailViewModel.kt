@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
+internal class DetailViewModel @Inject constructor(
 	private val savedStateHandle: SavedStateHandle,
 	private val getCachedBookUseCase: GetCachedBookUseCase
 ) : ViewModel() {

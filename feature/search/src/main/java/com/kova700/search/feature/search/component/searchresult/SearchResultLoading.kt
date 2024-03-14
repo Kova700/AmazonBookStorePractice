@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SearchResultLoading(
+internal fun SearchResultLoading(
 	modifier: Modifier = Modifier.fillMaxSize(),
 ) {
 	Box(modifier = modifier) {
@@ -23,6 +23,6 @@ fun SearchResultLoading(
 
 @Composable
 @Preview(showBackground = true)
-fun Preview() {
+private fun Preview() {
 	SearchResultLoading()
 }

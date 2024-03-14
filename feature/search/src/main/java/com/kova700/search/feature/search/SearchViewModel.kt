@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+internal class SearchViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
 	private val getSearchedBookUseCase: GetSearchedBookUseCase,
 	private val getSearchedBookFlowUseCase: GetSearchedBookFlowUseCase,
@@ -130,6 +130,6 @@ class SearchViewModel @Inject constructor(
 	}
 
 	companion object {
-		const val IS_TEST_FLAG = "IS_TEST_FLAG"
+		internal const val IS_TEST_FLAG = "IS_TEST_FLAG"
 	}
 }

@@ -23,7 +23,7 @@ import androidx.compose.ui.window.Dialog
 import com.kova700.booksearch.model.KakaoBookSearchSortType
 
 @Composable
-fun SearchSortOptionDialog(
+internal fun SearchSortOptionDialog(
 	onChangeState: () -> Unit,
 	onSortOptionChange: (KakaoBookSearchSortType) -> Unit,
 	currentSortType: KakaoBookSearchSortType
@@ -104,7 +104,7 @@ fun SearchSortOptionDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchOptionDialogPreview() {
+private fun SearchOptionDialogPreview() {
 	SearchSortOptionDialog(
 		onChangeState = {},
 		onSortOptionChange = {},

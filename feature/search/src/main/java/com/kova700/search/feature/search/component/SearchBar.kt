@@ -32,7 +32,7 @@ import com.kova700.design_system.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
+internal fun SearchBar(
 	searchKeyword: String,
 	onValueChange: (String) -> Unit,
 	onTextFieldFocus: () -> Unit,
@@ -132,7 +132,7 @@ fun SearchBar(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchBarPreview() {
+private fun SearchBarPreview() {
 	SearchBar(
 		searchKeyword = "",
 		onValueChange = {},

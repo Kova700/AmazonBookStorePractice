@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.kova700.design_system.R
 
 @Composable
-fun SearchHistoryItem(
+internal fun SearchHistoryItem(
 	historyString: String,
 	onHistoryClick: () -> Unit,
 	onHistoryRemoveClick: () -> Unit,
@@ -58,7 +58,7 @@ fun SearchHistoryItem(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchHistoryItemPreview() {
+private fun SearchHistoryItemPreview() {
 	SearchHistoryItem(
 		historyString = "테스트 아이템 1",
 		onHistoryClick = {},

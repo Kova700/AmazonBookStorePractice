@@ -4,10 +4,10 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-sealed interface SearchResultBookItem
+internal sealed interface SearchResultBookItem
 
 @Immutable
-data class BookItem(
+internal data class BookItem(
 	val title: String,
 	val thumbnail: String,
 	val authors: ImmutableList<String>,

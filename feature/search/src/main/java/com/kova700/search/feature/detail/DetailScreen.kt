@@ -32,7 +32,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun DetailScreen(
+internal fun DetailScreen(
 	detailViewModel: DetailViewModel = hiltViewModel(),
 	navigateToWebView: (String) -> Unit = {}
 ) {
