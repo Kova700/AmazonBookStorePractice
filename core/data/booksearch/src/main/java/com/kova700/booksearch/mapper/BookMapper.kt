@@ -4,7 +4,7 @@ import com.kova700.booksearch.model.Book
 import com.kova700.booksearch.model.NetworkBook
 import kotlinx.collections.immutable.toImmutableList
 
-fun NetworkBook.toDomain() = Book(
+internal fun NetworkBook.toDomain() = Book(
 	title = title,
 	thumbnail = thumbnail,
 	authors = authors.toImmutableList(),
@@ -18,5 +18,3 @@ fun NetworkBook.toDomain() = Book(
 	url = url,
 	salePrice = salePrice
 )
-
-fun List<NetworkBook>.toDomain() = this.map { it.toDomain() }

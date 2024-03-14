@@ -4,20 +4,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BookResponse(
+internal data class BookResponse(
 	@SerialName("documents") val books: List<NetworkBook> = emptyList(),
 	@SerialName("meta") val meta: Meta
 )
 
 @Serializable
-data class Meta(
+internal data class Meta(
 	@SerialName("is_end") val isEnd: Boolean,
 	@SerialName("pageable_count") val pageableCount: Int,
 	@SerialName("total_count") val totalCount: Int
 )
 
 @Serializable
-data class NetworkBook(
+internal data class NetworkBook(
 	@SerialName("title") val title: String,
 	@SerialName("thumbnail") val thumbnail: String,
 	@SerialName("authors") val authors: List<String>,

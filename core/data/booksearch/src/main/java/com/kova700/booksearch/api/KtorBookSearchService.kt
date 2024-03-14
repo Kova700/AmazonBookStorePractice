@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import javax.inject.Inject
 
-class KtorBookSearchService @Inject constructor(
+internal class KtorBookSearchService @Inject constructor(
 	private val ktorHttpClient: HttpClient
 ) : BookSearchService {
 

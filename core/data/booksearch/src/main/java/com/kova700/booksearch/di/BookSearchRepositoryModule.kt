@@ -10,7 +10,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface BookSearchRepositoryModule {
+internal interface BookSearchRepositoryModule {
+
 	@Binds
 	@Singleton
 //	@Reusable

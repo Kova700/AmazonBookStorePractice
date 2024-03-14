@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class BookSearchRepositoryImpl @Inject constructor(
+internal class BookSearchRepositoryImpl @Inject constructor(
 	private val bookSearchService: BookSearchService
 ) : BookSearchRepository {
 

@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface ServiceModule {
+internal interface ServiceModule {
 
 	@Binds
 	@Singleton
