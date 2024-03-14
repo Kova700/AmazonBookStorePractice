@@ -15,12 +15,15 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "AmazonBookStorePractice"
-include(":app")
-include(":core:network")
-include(":core:domain:booksearch")
-include(":core:domain:searchhistory")
-include(":core:data:booksearch")
-include(":core:data:searchhistory")
-include(":core:datastore")
-include(":core:design-system")
-include(":feature:search")
+
+include(
+    ":app",
+    ":core:network",
+    ":core:domain:booksearch",
+    ":core:domain:searchhistory",
+    ":core:data:booksearch",
+    ":core:data:searchhistory",
+    ":core:datastore",
+    ":core:design-system",
+    ":feature:search"
+)
