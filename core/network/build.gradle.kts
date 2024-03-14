@@ -2,7 +2,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 var properties = Properties()
-properties.load(FileInputStream("local.properties"))
+properties.load(FileInputStream("./core/network/local.properties"))
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
