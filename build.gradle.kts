@@ -1,9 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-	id("com.android.application") version "8.1.0" apply false
-	id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-	kotlin("jvm") version "1.9.0" apply false
-	id("com.google.devtools.ksp") version "1.9.20-1.0.14" apply false
-	id("com.google.dagger.hilt.android") version "2.48.1" apply false
-	kotlin("plugin.serialization") version "1.9.0" apply false
-}
+//@Suppress("DSL_SCOPE_VIOLATION")
+//plugins {
+////	alias(libs.plugins.android.application) apply false
+////	alias(libs.plugins.android.hilt) apply false
+////	alias(libs.plugins.kotlin.android) apply false
+////	alias(libs.plugins.kotlin.serialization) apply false
+////	alias(libs.plugins.ksp) apply false
+////	alias(libs.plugins.android.library) apply false
+////	alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
+//}
+//true // Needed to make the Suppress annotation work for the plugins block
