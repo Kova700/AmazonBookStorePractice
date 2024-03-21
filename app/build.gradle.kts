@@ -1,57 +1,21 @@
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-	alias(libs.plugins.android.application)
-	alias(libs.plugins.kotlin.android)
-	alias(libs.plugins.ksp)
-	alias(libs.plugins.android.hilt)
-	alias(libs.plugins.kotlin.serialization)
+	id("convention.android.application")
+	id("convention.android.compose")
+	id("convention.android.hilt")
+
+//	alias(libs.plugins.android.application)
+//	alias(libs.plugins.kotlin.android)
+//	id("com.android.application")
+//	kotlin("android")
+//	alias(libs.plugins.ksp)
+//	alias(libs.plugins.android.hilt)
+//	alias(libs.plugins.kotlin.serialization)
 }
 
 android {
 	namespace = "com.kova700.amazonbookstorepractice"
-	compileSdk = libs.versions.compileSdk.get().toInt()
-
-	defaultConfig {
-		applicationId = "com.kova700.amazonbookstorepractice"
-		minSdk = libs.versions.minSdk.get().toInt()
-		targetSdk = libs.versions.targetSdk.get().toInt()
-		versionCode = libs.versions.versionCode.get().toInt()
-		versionName =
-			"${libs.versions.major.get()}.${libs.versions.minor.get()}.${libs.versions.hotfix.get()}"
-
-		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-		vectorDrawables {
-			useSupportLibrary = true
-		}
-	}
-
-	buildTypes {
-		release {
-			isMinifyEnabled = false
-			proguardFiles(
-				getDefaultProguardFile("proguard-android-optimize.txt"),
-				"proguard-rules.pro"
-			)
-		}
-	}
-	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_17
-	}
-	kotlinOptions {
-		jvmTarget = "17"
-	}
-	buildFeatures {
-		compose = true
-	}
-	composeOptions {
-		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-	}
-	packaging {
-		resources {
-			excludes += "/META-INF/{AL2.0,LGPL2.1}"
-		}
-	}
 }
 
 dependencies {
@@ -74,19 +38,22 @@ dependencies {
 	implementation(libs.compose.ui.tooling.preview)
 	implementation(libs.compose.material3)
 	implementation(libs.compose.navigation)
-	debugImplementation(libs.compose.ui.tooling)
 
-	testImplementation(libs.junit)
 	implementation(libs.test.androidx.core.ktx)
 	implementation(libs.test.androidx.junit.ktx)
+
+	testImplementation(libs.junit)
 	testImplementation(libs.test.mockito.core)
 	testImplementation(libs.test.mockito.inline)
 	testImplementation(libs.test.mockito.kotlin)
 	testImplementation(libs.test.coroutines)
+
 	androidTestImplementation(libs.test.androidx.junit)
 	androidTestImplementation(libs.test.androidx.espresso.core)
 	androidTestImplementation(libs.test.compose.ui.junit4)
+
 	debugImplementation(libs.test.compose.ui.manifest)
+	debugImplementation(libs.compose.ui.tooling)
 
 	implementation(libs.hilt.android)
 	ksp(libs.hilt.android.compiler)

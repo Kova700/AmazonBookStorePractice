@@ -1,7 +1,10 @@
 plugins {
 	`kotlin-dsl`
-	`kotlin-dsl-precompiled-script-plugins`
 }
-repositories{
-	mavenCentral()
+
+dependencies {
+	implementation(libs.plugin.agp)
+	implementation(libs.plugin.kotlin)
+	implementation(libs.plugin.ksp)
+	implementation(libs.plugin.hilt)
 }

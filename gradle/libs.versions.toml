@@ -40,7 +40,6 @@ material = "1.11.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 
 [libraries]
-
 ## AndroidX
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
@@ -95,6 +94,12 @@ test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.re
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+# plugin
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+plugin-hilt = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
@@ -103,14 +108,3 @@ android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
-
-[bundles]
-androidx-compose = [
-    "compose-ui",
-    "compose-ui-graphics",
-    "compose-ui-tooling",
-    "compose-ui-tooling-preview",
-    "compose-navigation",
-    "compose-material3",
-    "compose-activity",
-]
