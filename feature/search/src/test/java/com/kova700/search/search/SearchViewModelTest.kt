@@ -1,17 +1,17 @@
 package com.kova700.search.search
 
 import androidx.lifecycle.SavedStateHandle
-import com.kova700.amazonbookstorepractice.ui.main.mapper.toItemList
-import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel
-import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewModel.Companion.IS_TEST_FLAG
-import com.kova700.amazonbookstorepractice.ui.main.search.SearchViewState
-import com.kova700.amazonbookstorepractice.ui.main.search.UiState
+import com.kova700.search.feature.mapper.toItemList
+import com.kova700.search.feature.search.SearchViewModel
+import com.kova700.search.feature.search.SearchViewModel.Companion.IS_TEST_FLAG
+import com.kova700.search.feature.search.SearchViewState
+import com.kova700.search.feature.search.UiState
 import com.kova700.booksearch.model.Book
 import com.kova700.booksearch.model.KakaoBookSearchSortType
 import com.kova700.booksearch.usecase.GetSearchedBookFlowUseCase
 import com.kova700.booksearch.usecase.GetSearchedBookUseCase
 import com.kova700.search.MainCoroutineRule
-import com.kova700.searchhistory.usecase.AddSearchHistoryUseCase
+import com.kova700.core.data.searchhistory.external.usecase.AddSearchHistoryUseCase
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

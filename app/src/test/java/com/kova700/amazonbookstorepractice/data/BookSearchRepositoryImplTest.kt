@@ -1,14 +1,14 @@
 package com.kova700.amazonbookstorepractice.data
 
 import com.kova700.amazonbookstorepractice.data.api.BookSearchService
-import com.kova700.amazonbookstorepractice.data.mapper.toDomain
+import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.mapper.toDomain
 import com.kova700.amazonbookstorepractice.data.repository.BookSearchRepositoryImpl
 import com.kova700.amazonbookstorepractice.data.repository.BookSearchRepositoryImpl.Companion.DEFAULT_PAGING_SIZE
 import com.kova700.amazonbookstorepractice.data.repository.toMobileUrl
 import com.kova700.amazonbookstorepractice.data.response.BookResponse
 import com.kova700.amazonbookstorepractice.data.response.Meta
 import com.kova700.amazonbookstorepractice.data.response.NetworkBook
-import com.kova700.amazonbookstorepractice.domain.model.KakaoBookSearchSortType
+import com.kova700.external.model.KakaoBookSearchSortType
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
