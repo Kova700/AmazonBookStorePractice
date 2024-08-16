@@ -1,13 +1,13 @@
 package com.kova700.search.history
 
 import androidx.lifecycle.SavedStateHandle
-import com.kova700.amazonbookstorepractice.ui.main.search.component.history.SearchHistoryViewModel
-import com.kova700.amazonbookstorepractice.ui.main.search.component.history.SearchHistoryViewModel.Companion.IS_TEST_FLAG
+import com.kova700.search.feature.search.component.searchhistory.SearchHistoryViewModel
+import com.kova700.search.feature.search.component.searchhistory.SearchHistoryViewModel.Companion.IS_TEST_FLAG
 import com.kova700.search.MainCoroutineRule
-import com.kova700.searchhistory.usecase.ClearSearchHistoryUseCase
-import com.kova700.searchhistory.usecase.GetSearchHistoryFlowUseCase
-import com.kova700.searchhistory.usecase.MoveHistoryAtTheTopUseCase
-import com.kova700.searchhistory.usecase.RemoveSearchHistoryUseCase
+import com.kova700.core.data.searchhistory.external.usecase.ClearSearchHistoryUseCase
+import com.kova700.core.data.searchhistory.external.usecase.GetSearchHistoryFlowUseCase
+import com.kova700.core.data.searchhistory.external.usecase.MoveHistoryAtTheTopUseCase
+import com.kova700.core.data.searchhistory.external.usecase.RemoveSearchHistoryUseCase
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf

@@ -6,8 +6,8 @@ import com.kova700.amazonbookstorepractice.domain.usecase.ClearSearchHistoryUseC
 import com.kova700.amazonbookstorepractice.domain.usecase.GetSearchHistoryFlowUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.MoveHistoryAtTheTopUseCase
 import com.kova700.amazonbookstorepractice.domain.usecase.RemoveSearchHistoryUseCase
-import com.kova700.amazonbookstorepractice.ui.main.search.component.history.SearchHistoryViewModel
-import com.kova700.amazonbookstorepractice.ui.main.search.component.history.SearchHistoryViewModel.Companion.IS_TEST_FLAG
+import com.kova700.search.feature.search.component.searchhistory.SearchHistoryViewModel
+import com.kova700.search.feature.search.component.searchhistory.SearchHistoryViewModel.Companion.IS_TEST_FLAG
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf

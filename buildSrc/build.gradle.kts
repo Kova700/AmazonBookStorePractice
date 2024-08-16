@@ -3,8 +3,9 @@ plugins {
 }
 
 dependencies {
-	implementation(libs.plugin.agp)
-	implementation(libs.plugin.kotlin)
-	implementation(libs.plugin.ksp)
-	implementation(libs.plugin.hilt)
+	implementation(libs.gradle.plugin.android)
+	implementation(libs.gradle.plugin.kotlin)
+	implementation(libs.gradle.plugin.ksp)
+	implementation(libs.gradle.plugin.hilt)
+	implementation(libs.gradle.plugin.compose.compiler)
 }
