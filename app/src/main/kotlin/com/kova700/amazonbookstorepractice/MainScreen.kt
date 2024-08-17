@@ -1,4 +1,4 @@
-package com.kova700.search.feature
+package com.kova700.amazonbookstorepractice
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -8,17 +8,17 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kova700.search.feature.detail.DetailScreen
 import com.kova700.search.feature.detail.DetailWebView
+import com.kova700.search.feature.detail.SELECTED_BOOK_INDEX
 import com.kova700.search.feature.search.SearchScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
 fun MainScreen() {
-			val navController = rememberNavController()
+	val navController = rememberNavController()
 
-			NavHost(navController = navController, startDestination = ScreenRoute.SEARCH.route) {
-
-				composable(
+	NavHost(navController = navController, startDestination = ScreenRoute.SEARCH.route) {
+		composable(
 			route = ScreenRoute.SEARCH.route,
 		) {
 			SearchScreen(
@@ -54,7 +54,6 @@ fun MainScreen() {
 	}
 }
 
-const val SELECTED_BOOK_INDEX = "SELECTED_BOOK_INDEX"
 const val DETAIL_BOOK_URL = "DETAIL_BOOK_URL"
 
 enum class ScreenRoute(val route: String) {

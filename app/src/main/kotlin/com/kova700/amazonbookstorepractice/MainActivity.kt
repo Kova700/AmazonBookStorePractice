@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.kova700.search.feature.MainScreen
 import com.kova700.design_system.theme.AmazonBookStorePracticeTheme
 import dagger.hilt.android.AndroidEntryPoint
 

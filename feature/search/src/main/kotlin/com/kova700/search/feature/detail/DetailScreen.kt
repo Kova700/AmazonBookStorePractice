@@ -32,9 +32,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-internal fun DetailScreen(
+fun DetailScreen(
 	detailViewModel: DetailViewModel = hiltViewModel(),
-	navigateToWebView: (String) -> Unit = {}
+	navigateToWebView: (String) -> Unit = {},
 ) {
 	val book by detailViewModel.viewState.collectAsStateWithLifecycle()
 
@@ -67,7 +67,7 @@ private fun DetailContent(
 	status: String,
 	translators: ImmutableList<String>,
 	url: String,
-	navigateToWebView: (String) -> Unit = {}
+	navigateToWebView: (String) -> Unit = {},
 ) {
 	val scrollState = rememberScrollState()
 
