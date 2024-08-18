@@ -1,4 +1,4 @@
-package com.kova700.datastore.di
+package com.kova700.core.datastore.datastore.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore

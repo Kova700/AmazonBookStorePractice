@@ -1,7 +1,6 @@
 plugins {
 	id("convention.android.library")
 	id("convention.android.hilt")
-	alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -10,6 +9,5 @@ android {
 
 dependencies {
 	implementation(project(":core:data:booksearch:external"))
-	implementation(libs.bundles.ktor)
-	implementation(libs.kotlinx.collections.immutable)
+	implementation(project(":core:network:booksearch"))
 }

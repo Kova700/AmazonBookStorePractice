@@ -1,23 +1,23 @@
-package com.kova700.amazonbookstorepractice.core.data.booksearch.internal.model
+package com.kova700.core.network.booksearch.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class BookResponse(
+data class BookResponse(
 	@SerialName("documents") val books: List<NetworkBook> = emptyList(),
-	@SerialName("meta") val meta: Meta
+	@SerialName("meta") val meta: Meta,
 )
 
 @Serializable
-internal data class Meta(
+data class Meta(
 	@SerialName("is_end") val isEnd: Boolean,
 	@SerialName("pageable_count") val pageableCount: Int,
-	@SerialName("total_count") val totalCount: Int
+	@SerialName("total_count") val totalCount: Int,
 )
 
 @Serializable
-internal data class NetworkBook(
+data class NetworkBook(
 	@SerialName("title") val title: String,
 	@SerialName("thumbnail") val thumbnail: String,
 	@SerialName("authors") val authors: List<String>,
@@ -29,7 +29,7 @@ internal data class NetworkBook(
 	@SerialName("status") val status: String,
 	@SerialName("translators") val translators: List<String>,
 	@SerialName("url") val url: String,
-	@SerialName("sale_price") val salePrice: Int
+	@SerialName("sale_price") val salePrice: Int,
 ) {
 	companion object {
 		val DEFAULT = NetworkBook(
