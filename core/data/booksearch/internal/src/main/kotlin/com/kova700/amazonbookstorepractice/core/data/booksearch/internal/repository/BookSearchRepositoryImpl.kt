@@ -36,7 +36,8 @@ internal class BookSearchRepositoryImpl @Inject constructor(
 	}
 
 	override suspend fun getSearchResult(
-		query: String, sort: KakaoBookSearchSortType,
+		query: String,
+		sort: KakaoBookSearchSortType,
 	): List<Book> {
 		if (query == cachedSearchKeyword && sort == cachedSortType && isEndPage) return books.value
 
@@ -49,7 +50,7 @@ internal class BookSearchRepositoryImpl @Inject constructor(
 
 		val response = bookSearchService.searchBooks(
 			query = query, page = cachedPage,
-			sort = sort.toString().lowercase(),
+			sort = sort,
 			size = DEFAULT_PAGING_SIZE
 		)
 

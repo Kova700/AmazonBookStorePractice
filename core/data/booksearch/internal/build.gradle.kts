@@ -10,4 +10,6 @@ android {
 dependencies {
 	implementation(project(":core:data:booksearch:external"))
 	implementation(project(":core:network:booksearch"))
+	testImplementation(libs.bundles.unit.test)
+	androidTestImplementation(libs.bundles.android.test)
 }

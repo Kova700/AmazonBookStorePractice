@@ -22,5 +22,6 @@ android {
 }
 
 dependencies {
+	implementation(project(":core:data:booksearch:external"))
 	implementation(libs.bundles.ktor)
 }

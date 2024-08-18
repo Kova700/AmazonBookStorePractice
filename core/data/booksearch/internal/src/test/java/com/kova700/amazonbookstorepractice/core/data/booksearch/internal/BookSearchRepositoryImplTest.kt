@@ -1,14 +1,14 @@
-package com.kova700.booksearch
+package com.kova700.amazonbookstorepractice.core.data.booksearch.internal
 
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.repository.BookSearchRepositoryImpl
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.mapper.toDomain
+import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.repository.BookSearchRepositoryImpl
 import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.repository.BookSearchRepositoryImpl.Companion.DEFAULT_PAGING_SIZE
 import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.repository.toMobileUrl
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.api.BookSearchService
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.model.BookResponse
-import com.kova700.booksearch.model.KakaoBookSearchSortType
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.model.Meta
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.model.NetworkBook
+import com.kova700.core.network.booksearch.BookSearchNetworkService
+import com.kova700.core.network.booksearch.model.BookResponse
+import com.kova700.core.network.booksearch.model.Meta
+import com.kova700.core.network.booksearch.model.NetworkBook
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -21,7 +21,7 @@ import org.mockito.kotlin.whenever
 
 class BookSearchRepositoryImplTest {
 
-	private val bookSearchService = mock<BookSearchService>()
+	private val bookSearchService = mock<BookSearchNetworkService>()
 	private val bookSearchRepository = BookSearchRepositoryImpl(
 		bookSearchService = bookSearchService
 	)
@@ -45,22 +45,24 @@ class BookSearchRepositoryImplTest {
 		val mockResponse = BookResponse(
 			books = listOf(
 				NetworkBook.DEFAULT.copy(
-					title = "테스트 Title1"
+					title = "테스트 Title1",
+					thumbnail = "https://test.com/test1.jpg"
 				),
 				NetworkBook.DEFAULT.copy(
-					title = "테스트 Title2"
+					title = "테스트 Title2",
+					thumbnail = "https://test.com/test2.jpg"
 				),
 			), meta = Meta(
 				isEnd = true,
 				pageableCount = 1,
-				totalCount = 1
+				totalCount = 2
 			)
 		)
 
 		whenever(
 			bookSearchService.searchBooks(
 				query = enteredQuery,
-				sort = enteredSort.toString().lowercase(),
+				sort = enteredSort,
 				page = enteredPage,
 				size = enteredSize
 			)
@@ -70,13 +72,14 @@ class BookSearchRepositoryImplTest {
 			query = enteredQuery,
 			sort = enteredSort
 		)
+
 		val expectedResults = mockResponse.books
 			.filter { it.thumbnail.isNotBlank() }
 			.map { it.copy(url = it.url.toMobileUrl()).toDomain() }
 
 		verify(bookSearchService).searchBooks(
 			query = enteredQuery,
-			sort = enteredSort.toString().lowercase(),
+			sort = enteredSort,
 			page = enteredPage,
 			size = enteredSize
 		)

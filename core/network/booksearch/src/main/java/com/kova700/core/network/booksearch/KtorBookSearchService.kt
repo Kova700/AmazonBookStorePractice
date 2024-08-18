@@ -1,5 +1,6 @@
 package com.kova700.core.network.booksearch
 
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.core.network.booksearch.BuildConfig
 import com.kova700.core.network.booksearch.model.BookResponse
 import io.ktor.client.HttpClient
@@ -32,14 +33,14 @@ internal class KtorBookSearchService @Inject constructor(
 
 	override suspend fun searchBooks(
 		query: String,
-		sort: String,
+		sort: KakaoBookSearchSortType,
 		page: Int,
 		size: Int,
 	): BookResponse {
 
 		return kakaoSearchClient.get(SEARCH_BOOKS_URL) {
 			parameter("query", query)
-			parameter("sort", sort)
+			parameter("sort", sort.toString().lowercase())
 			parameter("page", page)
 			parameter("size", size)
 		}.body<BookResponse>()
