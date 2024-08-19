@@ -18,7 +18,6 @@ rootProject.name = "AmazonBookStorePractice"
 
 include(
 	":app",
-	":core:network",
 	":core:design-system",
 	":core:data:booksearch:external",
 	":core:data:booksearch:internal",
@@ -26,5 +25,7 @@ include(
 	":core:data:searchhistory:internal",
 	":core:datastore:datastore",
 	":core:datastore:searchhistory",
+	":core:network:network",
+	":core:network:booksearch",
 	":feature:search"
 )

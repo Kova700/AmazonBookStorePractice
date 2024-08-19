@@ -5,7 +5,7 @@ import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.B
 import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
 import com.kova700.amazonbookstorepractice.core.data.booksearch.external.repository.BookSearchRepository
 import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.mapper.toDomain
-import com.kova700.amazonbookstorepractice.core.data.booksearch.internal.api.BookSearchService
+import com.kova700.core.network.booksearch.BookSearchNetworkService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 internal class BookSearchRepositoryImpl @Inject constructor(
-	private val bookSearchService: BookSearchService
+	private val bookSearchService: BookSearchNetworkService,
 ) : BookSearchRepository {
 
 	@VisibleForTesting
@@ -36,7 +36,8 @@ internal class BookSearchRepositoryImpl @Inject constructor(
 	}
 
 	override suspend fun getSearchResult(
-		query: String, sort: KakaoBookSearchSortType
+		query: String,
+		sort: KakaoBookSearchSortType,
 	): List<Book> {
 		if (query == cachedSearchKeyword && sort == cachedSortType && isEndPage) return books.value
 
@@ -49,7 +50,7 @@ internal class BookSearchRepositoryImpl @Inject constructor(
 
 		val response = bookSearchService.searchBooks(
 			query = query, page = cachedPage,
-			sort = sort.toString().lowercase(),
+			sort = sort,
 			size = DEFAULT_PAGING_SIZE
 		)
 

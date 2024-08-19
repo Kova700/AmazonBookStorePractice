@@ -4,10 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kova700.core.data.searchhistory.external.usecase.ClearSearchHistoryUseCase
-import com.kova700.core.data.searchhistory.external.usecase.GetSearchHistoryFlowUseCase
-import com.kova700.core.data.searchhistory.external.usecase.MoveHistoryAtTheTopUseCase
-import com.kova700.core.data.searchhistory.external.usecase.RemoveSearchHistoryUseCase
+import com.kova700.core.data.searchhistory.external.repository.SearchHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -21,10 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class SearchHistoryViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
-	private val getSearchHistoryFlowUseCase: GetSearchHistoryFlowUseCase,
-	private val removeSearchHistoryUseCase: RemoveSearchHistoryUseCase,
-	private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
-	private val moveHistoryAtTheTopUseCase: MoveHistoryAtTheTopUseCase
+	private val searchHistoryRepository: SearchHistoryRepository,
 ) : ViewModel() {
 	private val isTest = savedStateHandle.get<Boolean>(IS_TEST_FLAG) ?: false
 
@@ -39,21 +33,21 @@ internal class SearchHistoryViewModel @Inject constructor(
 
 	@VisibleForTesting
 	fun observeSearchHistory() = viewModelScope.launch {
-		getSearchHistoryFlowUseCase().collect { historyList ->
+		searchHistoryRepository.getSearchHistoryFlow().collect { historyList ->
 			_viewState.update { historyList.toImmutableList() }
 		}
 	}
 
 	fun onHistoryClick(index: Int) = viewModelScope.launch {
-		moveHistoryAtTheTopUseCase(index)
+		searchHistoryRepository.moveHistoryAtTheTop(index)
 	}
 
 	fun onHistoryRemoveClick(index: Int) = viewModelScope.launch {
-		removeSearchHistoryUseCase(index)
+		searchHistoryRepository.removeHistory(index)
 	}
 
 	fun onHistoryClearClick() = viewModelScope.launch {
-		clearSearchHistoryUseCase()
+		searchHistoryRepository.clearHistory()
 	}
 
 	companion object {

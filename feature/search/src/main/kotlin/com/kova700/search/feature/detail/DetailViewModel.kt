@@ -2,8 +2,7 @@ package com.kova700.search.feature.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.kova700.amazonbookstorepractice.core.data.booksearch.external.usecase.GetCachedBookUseCase
-import com.kova700.search.feature.SELECTED_BOOK_INDEX
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.repository.BookSearchRepository
 import com.kova700.search.feature.mapper.toItem
 import com.kova700.search.feature.model.BookItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,9 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-internal class DetailViewModel @Inject constructor(
+class DetailViewModel @Inject constructor(
 	private val savedStateHandle: SavedStateHandle,
-	private val getCachedBookUseCase: GetCachedBookUseCase
+	private val searchRepository: BookSearchRepository,
 ) : ViewModel() {
 
 	private val bookIndex: Int = savedStateHandle.get<Int>(SELECTED_BOOK_INDEX) ?: -1
@@ -27,6 +26,8 @@ internal class DetailViewModel @Inject constructor(
 	}
 
 	private fun loadBook(index: Int) {
-		_viewState.value = getCachedBookUseCase(index).toItem()
+		_viewState.value = searchRepository.getCachedBook(index).toItem()
 	}
 }
+
+const val SELECTED_BOOK_INDEX = "SELECTED_BOOK_INDEX"

@@ -5,10 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
-import com.kova700.amazonbookstorepractice.core.data.booksearch.external.usecase.GetSearchedBookFlowUseCase
-import com.kova700.amazonbookstorepractice.core.data.booksearch.external.usecase.GetSearchedBookUseCase
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.repository.BookSearchRepository
+import com.kova700.core.data.searchhistory.external.repository.SearchHistoryRepository
 import com.kova700.search.feature.mapper.toItem
-import com.kova700.core.data.searchhistory.external.usecase.AddSearchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -20,11 +19,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SearchViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
-	private val getSearchedBookUseCase: GetSearchedBookUseCase,
-	private val getSearchedBookFlowUseCase: GetSearchedBookFlowUseCase,
-	private val addSearchHistoryUseCase: AddSearchHistoryUseCase,
+	private val searchRepository: BookSearchRepository,
+	private val searchHistoryRepository: SearchHistoryRepository,
 ) : ViewModel() {
 	private val isTest = savedStateHandle.get<Boolean>(IS_TEST_FLAG) ?: false
 
@@ -36,14 +34,12 @@ internal class SearchViewModel @Inject constructor(
 	val _isExpanded = MutableStateFlow<Map<String, Boolean>>(emptyMap()) //(isbn, boolean)
 
 	init {
-		if (isTest.not()) {
-			observeSearchResult()
-		}
+		if (isTest.not()) observeSearchResult()
 	}
 
 	@VisibleForTesting
 	fun observeSearchResult() = viewModelScope.launch {
-		getSearchedBookFlowUseCase().combine(_isExpanded) { books, isExpandedMap ->
+		searchRepository.getSearchResultFlow().combine(_isExpanded) { books, isExpandedMap ->
 			books.map { book ->
 				if (isExpandedMap[book.isbn] == true) book.toItem(isExpanded = true)
 				else book.toItem()
@@ -56,7 +52,7 @@ internal class SearchViewModel @Inject constructor(
 		if (isLoadingTest) return@launch
 
 		runCatching {
-			getSearchedBookUseCase(
+			searchRepository.getSearchResult(
 				query = viewState.value.searchKeyWord,
 				sort = viewState.value.sortType,
 			)
@@ -80,7 +76,7 @@ internal class SearchViewModel @Inject constructor(
 	}
 
 	private fun addHistory() = viewModelScope.launch {
-		addSearchHistoryUseCase(viewState.value.searchKeyWord)
+		searchHistoryRepository.addHistory(viewState.value.searchKeyWord)
 	}
 
 	fun onKeywordClear() {

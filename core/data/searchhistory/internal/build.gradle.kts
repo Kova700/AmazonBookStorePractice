@@ -10,4 +10,6 @@ android {
 dependencies {
 	implementation(project(":core:data:searchhistory:external"))
 	implementation(project(":core:datastore:searchhistory"))
+	testImplementation(libs.bundles.unit.test)
+	androidTestImplementation(libs.bundles.android.test)
 }

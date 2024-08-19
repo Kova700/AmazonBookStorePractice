@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
-internal data class SearchViewState(
+data class SearchViewState(
 	val searchKeyWord: String,
 	val uiState: UiState,
 	val sortType: KakaoBookSearchSortType,
@@ -23,7 +23,7 @@ internal data class SearchViewState(
 	}
 }
 
-internal enum class UiState {
+enum class UiState {
 	DEFAULT,
 	SUCCESS,
 	LOADING,
