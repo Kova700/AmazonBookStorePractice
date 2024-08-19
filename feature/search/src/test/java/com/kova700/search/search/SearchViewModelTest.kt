@@ -1,17 +1,16 @@
 package com.kova700.search.search
 
 import androidx.lifecycle.SavedStateHandle
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.Book
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
+import com.kova700.amazonbookstorepractice.core.data.booksearch.external.repository.BookSearchRepository
+import com.kova700.core.data.searchhistory.external.repository.SearchHistoryRepository
+import com.kova700.search.MainCoroutineRule
 import com.kova700.search.feature.mapper.toItemList
 import com.kova700.search.feature.search.SearchViewModel
 import com.kova700.search.feature.search.SearchViewModel.Companion.IS_TEST_FLAG
 import com.kova700.search.feature.search.SearchViewState
 import com.kova700.search.feature.search.UiState
-import com.kova700.booksearch.model.Book
-import com.kova700.booksearch.model.KakaoBookSearchSortType
-import com.kova700.booksearch.usecase.GetSearchedBookFlowUseCase
-import com.kova700.booksearch.usecase.GetSearchedBookUseCase
-import com.kova700.search.MainCoroutineRule
-import com.kova700.core.data.searchhistory.external.usecase.AddSearchHistoryUseCase
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -28,9 +27,8 @@ class SearchViewModelTest {
 	@get:Rule
 	val coroutineRule = MainCoroutineRule()
 
-	private val getSearchedBookUseCase = mock<GetSearchedBookUseCase>()
-	private val getSearchedBookFlowUseCase = mock<GetSearchedBookFlowUseCase>()
-	private val addSearchHistoryUseCase = mock<AddSearchHistoryUseCase>()
+	private val searchRepository = mock<BookSearchRepository>()
+	private val searchHistoryRepository = mock<SearchHistoryRepository>()
 
 	private val savedStateHandle = SavedStateHandle().apply {
 		set(IS_TEST_FLAG, true)
@@ -38,9 +36,8 @@ class SearchViewModelTest {
 
 	private val searchViewModel = SearchViewModel(
 		savedStateHandle = savedStateHandle,
-		getSearchedBookUseCase = getSearchedBookUseCase,
-		getSearchedBookFlowUseCase = getSearchedBookFlowUseCase,
-		addSearchHistoryUseCase = addSearchHistoryUseCase,
+		searchRepository = searchRepository,
+		searchHistoryRepository = searchHistoryRepository
 	)
 
 	private val mockSearchResponse = listOf(
@@ -74,7 +71,7 @@ class SearchViewModelTest {
 		searchViewModel.changeSearchKeyword(emptySearchKeyword)
 		searchViewModel.searchKeyword()
 
-		verify(getSearchedBookUseCase, never()).invoke(
+		verify(searchRepository, never()).getSearchResult(
 			query = emptySearchKeyword,
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
@@ -85,7 +82,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
@@ -94,7 +91,7 @@ class SearchViewModelTest {
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
-		verify(getSearchedBookUseCase).invoke(
+		verify(searchRepository).getSearchResult(
 			query = nonEmptySearchKeyword,
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
@@ -103,13 +100,14 @@ class SearchViewModelTest {
 	@Test
 	fun `검색된 데이터는 가지고 있던 isExpanded 여부와 combine되어야함`() = runTest {
 		whenever(
-			getSearchedBookFlowUseCase.invoke()
+			searchRepository.getSearchResultFlow()
 		).thenReturn(flowOf(mockSearchResponse))
-		searchViewModel._isExpanded.value = mapOf("1" to true, "4" to true)
 
+		searchViewModel._isExpanded.value = mapOf("1" to true, "4" to true)
 		searchViewModel.observeSearchResult()
 
-		verify(getSearchedBookFlowUseCase).invoke()
+		verify(searchRepository).getSearchResultFlow() //이게 호출되는 이유가 뭐지?
+
 		val expectedResults = mockSearchResponse.toItemList().map {
 			if (it.isbn == "1" || it.isbn == "4") it.copy(isExpanded = true)
 			else it
@@ -132,7 +130,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
@@ -149,7 +147,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
@@ -166,7 +164,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
@@ -175,8 +173,8 @@ class SearchViewModelTest {
 		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
-		verify(addSearchHistoryUseCase).invoke(searchKeyword = nonEmptySearchKeyword)
-		verify(getSearchedBookUseCase).invoke(
+		verify(searchHistoryRepository).addHistory(searchKeyword = nonEmptySearchKeyword)
+		verify(searchRepository).getSearchResult(
 			query = nonEmptySearchKeyword,
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
@@ -187,7 +185,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
@@ -197,7 +195,7 @@ class SearchViewModelTest {
 		searchViewModel.searchKeyword()
 		searchViewModel.loadNextSearchResult()
 
-		verify(getSearchedBookUseCase, times(2)).invoke(
+		verify(searchRepository, times(2)).getSearchResult(
 			query = nonEmptySearchKeyword,
 			sort = KakaoBookSearchSortType.ACCURACY
 		)
@@ -208,7 +206,7 @@ class SearchViewModelTest {
 		val nonEmptySearchKeyword = "자바"
 
 		whenever(
-			getSearchedBookUseCase.invoke(
+			searchRepository.getSearchResult(
 				query = nonEmptySearchKeyword,
 				sort = KakaoBookSearchSortType.ACCURACY
 			)
