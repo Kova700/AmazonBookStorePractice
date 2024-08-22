@@ -36,6 +36,15 @@
 </br>
 
 ## *****Video***** 
+|Search & Paging|Search Option|Search History|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/7b197faa-b44d-4e1f-a7be-556477ac0f94">|<img width="240" src="https://github.com/user-attachments/assets/3f2ebd5c-24de-4c5a-8816-dde4b2fde524">|<img width="240" src="https://github.com/user-attachments/assets/3a3315ef-94fa-4970-a8ee-fffbf559e290">|
+</br>
+
+|Paging Fail Retry|Expanding Animation|DetailScren|DetailWebView|
+|:-----:|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/7b197faa-b44d-4e1f-a7be-556477ac0f94">|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/f5fd02ae-4dab-4696-8c99-06011c8887fb">|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/25eaa239-e329-476c-9aea-11896467445b">|<img width="240" src="https://github.com/user-attachments/assets/fd58faed-03f2-40f1-9f3b-a6f620e2221b">
+</br>
 
 ## *****Package Structure***** 
 ```
