@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object KtorModule {
+internal object KtorClientModule {
 
 	private val jsonConvertFormat = Json {
 		ignoreUnknownKeys = true
