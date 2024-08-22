@@ -1,4 +1,4 @@
-package com.kova700.search.feature.search.component.searchhistory
+package com.kova700.feature.searchhistory
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

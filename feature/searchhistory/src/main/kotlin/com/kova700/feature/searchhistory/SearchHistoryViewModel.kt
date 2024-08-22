@@ -1,4 +1,4 @@
-package com.kova700.search.feature.search.component.searchhistory
+package com.kova700.feature.searchhistory
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SearchHistoryViewModel @Inject constructor(
+class SearchHistoryViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
 	private val searchHistoryRepository: SearchHistoryRepository,
 ) : ViewModel() {

@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+	implementation(project(":feature:searchhistory"))
 	implementation(project(":core:data:searchhistory:external"))
 	implementation(project(":core:data:booksearch:external"))
 }

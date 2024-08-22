@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kova700.amazonbookstorepractice.core.data.booksearch.external.model.KakaoBookSearchSortType
+import com.kova700.feature.searchhistory.SearchHistoryScreen
 import com.kova700.search.feature.model.BookItem
 import com.kova700.search.feature.search.component.SearchBar
 import com.kova700.search.feature.search.component.SearchSortOptionDialog
-import com.kova700.search.feature.search.component.searchhistory.SearchHistoryScreen
 import com.kova700.search.feature.search.component.searchresult.SearchResult
 import com.kova700.search.feature.search.component.searchresult.SearchResultLoading
 import kotlinx.collections.immutable.persistentListOf

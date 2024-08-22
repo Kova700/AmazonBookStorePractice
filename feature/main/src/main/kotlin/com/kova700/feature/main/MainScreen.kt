@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice
+package com.kova700.feature.main
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
