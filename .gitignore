@@ -235,3 +235,7 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,kotlin,gradle,windows
 /project.dot.png
+/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/cversions.2.db
+/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{6AF0698E-D558-4F6E-9B3C-3716689AF493}.2.ver0x0000000000000001.db
+/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{8118AEAA-06C2-4C47-A40C-88F10223E659}.2.ver0x0000000000000001.db
+/%SystemDrive%/ProgramData/Microsoft/Windows/Caches/{DDF571F2-BE98-426D-8288-1A9A39C3FDA2}.2.ver0x0000000000000001.db

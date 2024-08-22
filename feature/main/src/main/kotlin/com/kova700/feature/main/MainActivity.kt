@@ -1,4 +1,4 @@
-package com.kova700.amazonbookstorepractice
+package com.kova700.feature.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

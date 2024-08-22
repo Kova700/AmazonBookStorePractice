@@ -13,20 +13,12 @@ android {
 		val hotfixVersion = libs.versions.hotfix.get()
 		versionName = "$majorVersion.$minorVersion.$hotfixVersion"
 	}
-
 }
 
 dependencies {
-	implementation(project(":core:data:booksearch:external"))
+	implementation(project(":feature:main"))
 	implementation(project(":core:data:booksearch:internal"))
-	implementation(project(":core:data:searchhistory:external"))
 	implementation(project(":core:data:searchhistory:internal"))
-	implementation(project(":core:design-system"))
-	implementation(project(":core:datastore:datastore"))
-	implementation(project(":core:datastore:searchhistory"))
-	implementation(project(":core:network:network"))
-	implementation(project(":core:network:booksearch"))
-	implementation(project(":feature:search"))
 	implementation(libs.androidx.core)
 	implementation(libs.bundles.androidx.lifecycle)
 }

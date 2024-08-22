@@ -27,5 +27,6 @@ include(
 	":core:datastore:searchhistory",
 	":core:network:network",
 	":core:network:booksearch",
-	":feature:search"
+	":feature:main",
+	":feature:search",
 )
