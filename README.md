@@ -14,9 +14,11 @@
 | ETC |Jetpack-Compose, Coil |
 </br>
 
-## *****Architecture*****
-### Clean-Architecture
-![image](https://github.com/Kova700/AmazonBookStorePractice/assets/81726145/ed448514-6beb-481e-bcfe-b076f8999dae)
+## *****Module Dependency Graph***** 
+![project dot](https://github.com/user-attachments/assets/62324438-e056-4e93-99d3-322b08fe516f)
+
+## *****Architecture Layer***** 
+![image](https://github.com/user-attachments/assets/beeae049-ce86-49bd-8b56-877c9a415fe5)
 
 
 </br>
@@ -28,8 +30,6 @@
 ## *****Data Flow***** 
 
 </br>
-
-## *****Module***** 
 
 </br>
 
