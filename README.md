@@ -37,6 +37,43 @@
 
 ## *****Video***** 
 
+## *****Package Structure***** 
+```
+├── app
+├── buildSrc
+│   ├── convention
+│   └── gradle.configure
+├── core
+│   ├── data
+│   │   ├── booksearch
+│   │   │   ├── external
+│   │   │   │   ├── model
+│   │   │   │   └── repository
+│   │   │   └── internal
+│   │   │   │   ├── di
+│   │   │   │   ├── mapper
+│   │   │   │   └── repository
+│   │   └── searchhistory
+│   │   │   ├── external
+│   │   │   │   └── repository
+│   │   │   └── internal
+│   │   │   │   ├── di
+│   │   │   │   └── repository
+│   ├── datastore
+│   │   ├── datastore
+│   │   │   └── di
+│   │   └── searchhistory
+│   ├── design-system
+│   └── network
+│       ├── booksearch
+│       │   ├── di
+│       │   └── model
+│       └── network
+└── feature
+    ├── main
+    ├── search
+    └── searchhistory
+```
 </br>
 
 ## *****Technical Experience*****
