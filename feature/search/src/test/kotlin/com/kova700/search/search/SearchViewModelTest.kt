@@ -68,7 +68,7 @@ class SearchViewModelTest {
 	fun `검색어가 비어있다면 검색되지 않음`() = runTest {
 		val emptySearchKeyword = ""
 
-		searchViewModel.changeSearchKeyword(emptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(emptySearchKeyword)
 		searchViewModel.searchKeyword()
 
 		verify(searchRepository, never()).getSearchResult(
@@ -88,7 +88,7 @@ class SearchViewModelTest {
 			)
 		).thenReturn(mockSearchResponse)
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
 		verify(searchRepository).getSearchResult(
@@ -119,7 +119,7 @@ class SearchViewModelTest {
 	fun `검색 시, Uistate가 UiState_LOADING으로 바뀐다`() = runTest {
 		val nonEmptySearchKeyword = "자바"
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword(isLoadingTest = true)
 
 		assertEquals(UiState.LOADING, searchViewModel.viewState.value.uiState)
@@ -136,7 +136,7 @@ class SearchViewModelTest {
 			)
 		).thenThrow(RuntimeException("Search API is Failed"))
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
 		assertEquals(UiState.ERROR, searchViewModel.viewState.value.uiState)
@@ -153,7 +153,7 @@ class SearchViewModelTest {
 			)
 		).thenReturn(emptyList())
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
 		assertEquals(UiState.EMPTY, searchViewModel.viewState.value.uiState)
@@ -170,7 +170,7 @@ class SearchViewModelTest {
 			)
 		).thenReturn(mockSearchResponse)
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 
 		verify(searchHistoryRepository).addHistory(searchKeyword = nonEmptySearchKeyword)
@@ -191,7 +191,7 @@ class SearchViewModelTest {
 			)
 		).thenReturn(mockSearchResponse)
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 		searchViewModel.loadNextSearchResult()
 
@@ -212,7 +212,7 @@ class SearchViewModelTest {
 			)
 		).thenReturn(mockSearchResponse)
 
-		searchViewModel.changeSearchKeyword(nonEmptySearchKeyword)
+		searchViewModel.onChangeSearchKeyword(nonEmptySearchKeyword)
 		searchViewModel.searchKeyword()
 		searchViewModel.loadNextSearchResult(isLoadingTest = true)
 

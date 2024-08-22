@@ -45,7 +45,7 @@ fun SearchScreen(
 		searchViewState = searchViewState,
 		navigateToDetailScreen = navigateToDetailScreen,
 		onItemExpend = searchViewModel::onItemExpend,
-		onValueChange = searchViewModel::changeSearchKeyword,
+		onValueChange = searchViewModel::onChangeSearchKeyword,
 		onTextFieldFocus = searchViewModel::showHistory,
 		onHistoryClick = searchViewModel::onHistoryClick,
 		onSearchClick = searchViewModel::searchKeyword,

@@ -71,7 +71,7 @@ class SearchViewModel @Inject constructor(
 		getSearchResult(isLoadingTest)
 	}
 
-	fun changeSearchKeyword(keyword: String) {
+	fun onChangeSearchKeyword(keyword: String) {
 		updateState { copy(searchKeyWord = keyword.trim()) }
 	}
 
@@ -80,7 +80,7 @@ class SearchViewModel @Inject constructor(
 	}
 
 	fun onKeywordClear() {
-		changeSearchKeyword("")
+		onChangeSearchKeyword("")
 	}
 
 	fun showHistory() {
