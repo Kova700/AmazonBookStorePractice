@@ -17,13 +17,16 @@
 ## *****Module Dependency Graph***** 
 ![project dot](https://github.com/user-attachments/assets/62324438-e056-4e93-99d3-322b08fe516f)
 
-## *****Architecture Layer***** 
-![image](https://github.com/user-attachments/assets/beeae049-ce86-49bd-8b56-877c9a415fe5)
+</br>
 
+## *****Layer Architecture***** 
+![image](https://github.com/user-attachments/assets/beeae049-ce86-49bd-8b56-877c9a415fe5)
 
 </br>
 
 ## *****UI Layer***** 
+![image](https://github.com/user-attachments/assets/95423d48-7327-49ca-a189-a7743efa27df)
+#### ■ State가 Ui elements로 흐르고 State Holder(Viewmodel)로는 Event만 전달되는 단방향 데이터 흐름(UDF)을 적용함.
 
 </br>
 
