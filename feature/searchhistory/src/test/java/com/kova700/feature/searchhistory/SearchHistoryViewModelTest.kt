@@ -1,9 +1,7 @@
-package com.kova700.search.history
+package com.kova700.feature.searchhistory
 
 import androidx.lifecycle.SavedStateHandle
 import com.kova700.core.data.searchhistory.external.repository.SearchHistoryRepository
-import com.kova700.search.MainCoroutineRule
-import com.kova700.feature.searchhistory.SearchHistoryViewModel
 import com.kova700.feature.searchhistory.SearchHistoryViewModel.Companion.IS_TEST_FLAG
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -27,7 +25,7 @@ class SearchHistoryViewModelTest {
 		set(IS_TEST_FLAG, true)
 	}
 
-	private val searchHistoryViewModel = com.kova700.feature.searchhistory.SearchHistoryViewModel(
+	private val searchHistoryViewModel = SearchHistoryViewModel(
 		savedStateHandle = savedStateHandle,
 		searchHistoryRepository = searchHistoryRepository,
 	)
