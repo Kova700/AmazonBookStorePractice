@@ -38,12 +38,14 @@
 ## *****Video***** 
 |Search & Paging|Search Option|Search History|
 |:-----:|:-----:|:-----:|
-|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/7b197faa-b44d-4e1f-a7be-556477ac0f94">|<img width="240" src="https://github.com/user-attachments/assets/3f2ebd5c-24de-4c5a-8816-dde4b2fde524">|<img width="240" src="https://github.com/user-attachments/assets/3a3315ef-94fa-4970-a8ee-fffbf559e290">|
+|<img width="240" src="https://github.com/user-attachments/assets/130b4506-dee1-417a-88f0-f9de86f5a5df">|<img width="240" src="https://github.com/user-attachments/assets/3f2ebd5c-24de-4c5a-8816-dde4b2fde524">|<img width="240" src="https://github.com/user-attachments/assets/3a3315ef-94fa-4970-a8ee-fffbf559e290">|
+
 </br>
 
 |Paging Fail Retry|Expanding Animation|DetailScren|DetailWebView|
 |:-----:|:-----:|:-----:|:-----:|
-|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/7b197faa-b44d-4e1f-a7be-556477ac0f94">|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/f5fd02ae-4dab-4696-8c99-06011c8887fb">|<img width="240" src="https://github.com/f-lab-edu/ZeroToMVVM/assets/81726145/25eaa239-e329-476c-9aea-11896467445b">|<img width="240" src="https://github.com/user-attachments/assets/fd58faed-03f2-40f1-9f3b-a6f620e2221b">
+|<img width="240" src="https://github.com/user-attachments/assets/017310d8-9753-447d-bb24-7b5720f5ca89">|<img width="240" src="https://github.com/user-attachments/assets/cea9a938-a294-44c0-9fc5-805b169923ab">|<img width="240" src="https://github.com/user-attachments/assets/2f5f1b26-c7f2-43b6-9c3f-adeb77d27562">|<img width="240" src="https://github.com/user-attachments/assets/fd58faed-03f2-40f1-9f3b-a6f620e2221b">
+
 </br>
 
 ## *****Package Structure***** 
