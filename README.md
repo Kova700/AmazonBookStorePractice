@@ -1,5 +1,5 @@
 # AmazonBookStorePractice
-### Jetpack-Compose를 이용한 선언형 UI, Clean-Architecture에 대한 학습, Test Code에 대한 학습을 위해 </br> Amazon 도서 쇼핑 페이지의 UI를 참고하여 진행한 간단한 프로젝트입니다.
+### 선언형 UI, Clean-Architecture, Test Code, Multi-Module에 대해 공부해보자.
 
 ## *****Tech Stack***** 
 | 구분 | Tech |
