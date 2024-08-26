@@ -15,6 +15,11 @@
 </br>
 
 ## *****Module Dependency Graph***** 
+Clean-Architecture의 Presentation(UI), Domain, Data 형식의 레이어 구분을 차용하여
+featrue:featrue(UI), core:data:feature:external(Domain) , core:data:feature:internal(Data) 형식으로  
+각 레이어를 Feature별로 구분하여 모듈을 분리해 해당 Feature를 제거하거나 수정할 때,  
+최대한 수정의 여파가 가능한 적은 구조로 모듈을 구성  
+</br>
 ![project dot](https://github.com/user-attachments/assets/62324438-e056-4e93-99d3-322b08fe516f)
 
 </br>
@@ -91,15 +96,14 @@
 
 ## 1) Clean-Architecture를 이용한 레이어 구분
 ### ■ 문제
-- 각 레이어에 맞는 데이터 클래스를 구분하지 않았을 때, 하나의 데이터 클래스에 UI 관련 의존성, 서버 의존성,
-DB 의존성 등의 너무 많은 책임이 생겼음, 그로 인해, 각 책임에대한 불필요한 상속 혹은 추가적인 코드가 생겨
-코드 수정이 매우 불편해졌음
+- 각 레이어에 맞는 데이터 클래스를 구분하지 않았을 때, 하나의 데이터 클래스에 UI 관련 의존성, Network 의존성, DB 의존성 등의 너무 많은 책임이 생겼음, 그로 인해, 각 책임에대한 불필요한 상속 혹은 추가적인 코드가 생겨 코드 수정이 매우 불편해졌음. 또한, 새로운 기능을 추가하거나 기존 기능을 제거할 때, 프로젝트 전체에 걸쳐 영향이 미치면서 개발이 복잡해졌음.
 ### ■ 해결
-- Clean-Architecture에 맞게 프로젝트 레이어를 Data, Domain, UI 레이어로 분리함. 각 레이어에서 사용할 각
-데이터 클래스를 따로 정의하고, 레이어 간에 데이터 이동 시 Mapper를 이용해 각 레이어에 맞는 데이터
-타입으로 변환하여 전달하게 수정 함.
-- 추가로, UI와 Data 레이어 간의 의존성을 아무런 의존성도 가지지 않는 Domain 레이어로 가지게 되어
-Mocking을 이용한 Unit 테스트 작성이 쉬워짐.
+- Clean-Architecture에 맞게 프로젝트 레이어를 Data, Domain, UI 레이어로 분리함. 
+또한, 각 레이어를 다시 Feature별로 나누어 모듈화함으로써 각 기능이 독립적으로 동작할 수 있도록 하였음.
+이를 통해 특정 기능의 추가 및 제거가 용이해졌으며, 다른 기능에 미치는 영향을 최소화할 수 있었음.
+- 각 레이어에서 사용할 각 데이터 클래스를 따로 정의하고, 레이어 간에 데이터 이동 시 Mapper를 이용해 각 레이어에 맞는 데이터 타입으로 변환하여 전달하게 수정 함.
+- 추가로, UI 레이어와 Data 레이어 간의 의존성을 Domain 레이어로 가지게 되어서, 
+Mocking을 이용해 각 구현체에 대한 Unit 테스트 작성이 쉬워짐. 
 
 </br>
 
@@ -115,10 +119,16 @@ Mocking을 이용한 Unit 테스트 작성이 쉬워짐.
 
 </br>
 
+## 3) Gradle Version Catalog와 Precompiled Script Plugin을 활용한 빌드 관리 최적화
+### ■ 문제
+- 프로젝트 내 라이브러리 버전 관리와 빌드 스크립트 관리가 체계적이지 않아, 유지보수 시 비효율적이고 오류가 발생하기 쉬웠음. 특히, 각 모듈마다 중복된 라이브러리 선언과 안드로이드 세팅으로 인해 버전 불일치 문제가 발생함.
+### ■ 해결
+- Gradle Version Catalog를 도입하여 프로젝트 전반에 걸친 라이브러리 버전 관리를 일원화함. 이를 통해 각 모듈에서 동일한 버전을 쉽게 참조할 수 있게 되어, 버전 불일치 문제를 해결함. 또한, Precompiled Script Plugin을 사용해 빌드 스크립트를 모듈화하고 재사용성을 높여, 빌드 설정 관리를 간소화시킴.
+
+</br>
+
 ## 3) State Hoisting과 UDF(단방향 데이터 흐름)
-- State Hoisting을 통해 UI가 ViewModel에게 Event를 통해 State를 넘겨 줌으로써, UI상태를 ViewModel에서
-관리하고, 갱신된 UiState를 UI에게 전달해주는 단방향 데이터 흐름을 통해 Stateless한 Composable 구성과 각
-Event에 맞는 State변경이 이루어 졌는지만 확인하면 되는, 보다 테스트 친화적인 구조에 대해 알게되었음.
+- State Hoisting과 UDF(단방향 데이터 흐름)을 통해 UI elements는 ViewModel에게 Event를 전달하고 StateHolder는 UI elements에게 State를 제공해주는 단방향 데이터 흐름을 통해 Stateless한 Composable 구성과 각 Event에 맞는 State변경이 이루어 졌는지만 확인하면 되는, 보다 테스트 친화적인 구조에 대해 알게되었음.
 
 </br>
 
