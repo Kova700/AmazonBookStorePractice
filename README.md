@@ -5,13 +5,15 @@
 | 구분 | Tech |
 |:---|:---------------------------------------------------------------------------|
 | Language | Kotlin |
+| Architecture | Clean-Architecture, Multi-Module |
 | Network | Ktor |
-| DataBase | Room, DataStore |
+| DataBase | DataStore |
 | Asynchronous | Coroutine, Flow |
 | DI | Dagger-Hilt |
 | Serialization | Kotlinx-Serialization |
 | Test | JUnit4, Kotlin-Mockito |
-| ETC |Jetpack-Compose, Coil |
+| Build |Version Catalog, Precompiled-Script-Plugin   |
+| ETC | Jetpack-Compose, Coil |
 </br>
 
 ## *****Module Dependency Graph***** 
